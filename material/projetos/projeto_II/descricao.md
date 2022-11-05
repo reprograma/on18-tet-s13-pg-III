@@ -66,7 +66,7 @@ A empresa Cozinha Comunitária disponibiliza cursos sobre alimentação saudáve
   
 - [ ] POST   "**/cozinha**" Deverá criar uma "cozinha"
 
-- [ ] DELETE   "/cozinha/[ID]" Deverá deletar uma biblioteca por id específico e retorna mensagem;
+- [ ] DELETE   "/cozinha/[ID]" Deverá deletar uma cozinha por id específico e retorna mensagem;
 
 - [ ] PATCH  "/cozinha/[ID]" Deverá alterar informação específica por id específico e retorna o cadastro atualizado;
 
@@ -78,7 +78,7 @@ A empresa Cozinha Comunitária disponibiliza cursos sobre alimentação saudáve
 <br>
 <br>
 
-## Dados para Collection Biblioteca
+## Dados para Collection Cozinha
 
 - _id: autogerado e obrigatório;
 - nome: texto e obrigatório;
