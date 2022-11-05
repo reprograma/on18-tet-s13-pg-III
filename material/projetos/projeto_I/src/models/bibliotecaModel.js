@@ -25,6 +25,6 @@ const bibliotecaSchema = new Schema({
     responsavel: {type: String, required: true}
 })
 
-const bibliotecaModel = mongoose.model("biblioteca", bibliotecaSchema)
+const Biblioteca = mongoose.model("Biblioteca", bibliotecaSchema)
 
-module.exports = bibliotecaModel;
+module.exports = Biblioteca;
