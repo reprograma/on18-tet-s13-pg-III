@@ -8,5 +8,6 @@ router.post('/cadastrar', controller.cadastrarCozinha)
 router.get('/exibir', controller.exibeCozinhas)
 router.get('/:id', controller.buscarCozinhaPorId)
 router.delete('/deletar/:id', controller.deletarCozinha)
+router.patch('/atualizar/:id', controller.atualizarCozinha)
 
 module.exports = router
