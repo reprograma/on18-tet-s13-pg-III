@@ -1,7 +1,8 @@
-const express = require("express")
+require('dotenv').config()
 
-const app = express()
 
-app.listen(8080, ()=>{
-    console.log("servidor rodando ok")
-})
+const app = require("./src/app")
+const PORT = process.env.PORT
+
+app.listen(PORT, () => console.log("Servidor Fluindo"))
+
