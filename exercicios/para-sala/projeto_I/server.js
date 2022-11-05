@@ -9,4 +9,4 @@ app.get('/', function(req, res) {
     })
 })
 
-app.listen(PORT, () => console.log(`Rodando na porta ${PORT}`))
+app.listen(PORT, () => console.log(`Rodando na porta ${PORT} :p`))
