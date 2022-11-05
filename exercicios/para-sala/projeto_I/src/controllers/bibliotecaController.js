@@ -3,18 +3,22 @@ const mongoose = require('mongoose');
 const bibliotecaSchema = require("../models/BibliotecaModel");
 
 const criarBiblioteca = async(requisicao, resposta) => {
-    const {nome, cnpj, telefone, iniciativa_privada, endereco, plano_saude, plano_saude_numero} = requisicao.body;
+    const {nome, cnpj, telefone, iniciativa_privada, endereco, bairros_atuantes, site, atividades_disponiveis, responsavel } = requisicao.body;
     try{
-        const biblioteca = new pacienteSchema({
+        const biblioteca = new bibliotecaSchema({
             nome: nome,
+            cnpj: cnpj,
             telefone: telefone,
+            iniciativa_privada: iniciativa_privada,
             endereco: endereco,
-            plano_saude: plano_saude,
-            plano_saude_numero: plano_saude_numero
+            bairros_atuantes: bairros_atuantes,
+            site: site,
+            atividades_disponiveis: atividades_disponiveis,
+            responsavel: responsavel
         })
-        const salvarPaciente = await paciente.save();
+        const salvarBiblioteca = await biblioteca.save();
         resposta.status(201).json({
-            paciente: salvarPaciente
+            biblioteca: salvarBiblioteca
         })
 
     }catch(error){
@@ -32,8 +36,8 @@ const buscarBibliotecas = async(require, response) => {
     if (nome) query.nome = new RegExp(nome, 'i');
 
     try {
-        const paciente = await pacienteSchema.find(query);
-        response.status(200).json(paciente)
+        const biblioteca = await bibliotecaSchema.find(query);
+        response.status(200).json(biblioteca)
 
     } catch (error) {
         response.status(500).json({
@@ -42,9 +46,28 @@ const buscarBibliotecas = async(require, response) => {
     }
 }
 
+const buscarBibliotecasPorID = async(require, response) => {
+    const { _id } = require.params
+
+    try {
+    const bibliotecas = await bibliotecaSchema.find(params)
+
+     const bibliotecaEncontrada = bibliotecas.find(bibliotecaAtual => {
+        return bibliotecaAtual.id == id
+    })
+    
+        response.status(200).send(bibliotecaEncontrada)
+    } catch (error) {
+        
+    }
+
+}
+
+
 
 
 module.exports = {
     criarBiblioteca,
-    buscarBibliotecas
+    buscarBibliotecas,
+    buscarBibliotecasPorID
 }

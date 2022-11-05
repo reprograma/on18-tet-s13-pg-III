@@ -29,7 +29,7 @@ const bibliotecaSchema = new mongoose.Schema({
         required: true 
         },
         numero: {
-            type: String,
+            type: Number,
             required: true
         },
         complemento: {
