@@ -8,4 +8,3 @@ app.use(cors()) //executar cors
 database.connect() //executando a função connect do arquivo mongoConfig
 module.exports = app //exp
 
- 
