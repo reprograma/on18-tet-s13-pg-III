@@ -56,8 +56,21 @@ const getBiblioteca = async (req, res) => {
 
 } 
 
+const getById = async (req, res) => {
+    try {
+        const biblioteca = await BibliotecaSchema.findById(req.params.id)
+        res.status(200).json(biblioteca);
+
+    } catch (error) {
+        res.status(500).json({
+            mensagem: error.message
+        })
+    }
+}
+
 module.exports = {
     criarBiblioteca,
-    getBiblioteca
+    getBiblioteca,
+    getById
 }
 
