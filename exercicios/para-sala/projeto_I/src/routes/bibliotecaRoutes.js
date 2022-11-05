@@ -3,6 +3,7 @@ const router = express.Router();
 
 const controller = require("../controller/bibliotecaController");
 
-router.post("/criar", controller.criarBiblioteca)
+router.get("/biblioteca", controller.getBiblioteca)
+router.post("/", controller.criarBiblioteca)
 
 module.exports = router;

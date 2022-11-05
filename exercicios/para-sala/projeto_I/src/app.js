@@ -10,7 +10,7 @@ const bibliotecaRoutes = require("./routes/bibliotecaRoutes")
 app.use(cors());
 app.use(express.json());
 
-app.use("/biblioteca", bibliotecaRoutes)
+app.use("/", bibliotecaRoutes)
 
 database.connect();
 
