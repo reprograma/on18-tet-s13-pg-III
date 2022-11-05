@@ -5,9 +5,12 @@ const cors = require('cors')
 const app = express()
 
 const database = require('./database/mongooseConnect')
+const cozinhaRoutes = require('./routes/cozinhaRoutes')
 
 app.use(cors())
 app.use(express.json())
+
+app.use('/cozinhas',cozinhaRoutes)
 
 database.connect()
 
