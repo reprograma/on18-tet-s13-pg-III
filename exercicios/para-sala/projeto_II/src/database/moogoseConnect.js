@@ -8,7 +8,7 @@ const connect = async () => {
             useUnifiedTopology: true
         })
 
-        console.log("Banco de dados conectado! :)")
+        console.log("Banco de dados conectado!")
     }catch(error){
         console.log(error.message)
     }
