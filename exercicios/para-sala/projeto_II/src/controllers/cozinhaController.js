@@ -49,8 +49,22 @@ const buscarCozinhaPorId = async (req,res)=>{
   }
 }
 
+const deletarCozinha = async (req,res)=>{
+  try {
+    const cozinha = await cozinhaSchema.findById(req.params.id)
+    await cozinha.delete()
+    res.status(200).json({
+      mensagem: "cozinha deletada"})
+  } catch (error) {
+    res.status(400).json({
+      mensagem: error.message
+    })
+  }
+}
+
 module.exports = {
     cadastrarCozinha,
     exibeCozinhas,
-    buscarCozinhaPorId
+    buscarCozinhaPorId,
+    deletarCozinha
 }
