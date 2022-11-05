@@ -1,6 +1,13 @@
 require('dotenv').config();
 
-
 const app = require("./src/app")
 
-app.listen(3013, () => console.log("Servidor OK"))
+const PORT = process.env.PORT;
+
+app.get('/', function(req, res) {
+    res.send({
+        message: 'primeiro get'
+    })
+})
+
+app.listen(PORT, () => console.log("Servidor OK"))
