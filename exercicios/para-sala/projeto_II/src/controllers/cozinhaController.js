@@ -1,10 +1,16 @@
 const mongoose = require("mongoose");
 const CozinhaSchema = require("../models/CozinhaSchema");
+const cozinhaUtils = require("../utils/servicoCozinha");
 
-const criarCozinha = async (requisicao, resposta) => {
+const criarCozinha = async (request, response) => {
     const { nome, cnpj, iniciativa_privada,
         endereco: { cep, rua, numero, complemento, referencia, estado, cidade, bairro },
-        bairros_atuantes, site, atividades_disponiveis, pessoa_responsavel } = requisicao.body;
+        bairros_atuantes, site, atividades_disponiveis, pessoa_responsavel } = request.body;
+
+    const buscaCnpj = await CozinhaSchema.find({ cnpj })
+    if (buscaCnpj.length !== 0) {//array zerado ou array encontrado
+        return response.status(400).json({ message: `Não é possível cadastrar, esse número de cnpj já existe` });
+    }
     try {
         const cozinha = new CozinhaSchema({
             nome: nome,
@@ -25,15 +31,14 @@ const criarCozinha = async (requisicao, resposta) => {
             atividades_disponiveis: atividades_disponiveis,
             pessoa_responsavel: pessoa_responsavel
         })
-
         const salvarCozinha = await cozinha.save();
-        resposta.status(201).json({
+        response.status(201).json({
             cozinha: salvarCozinha
         })
 
     } catch (error) {
-        resposta.status(400).json({
-            messagem: error.message
+        response.status(400).json({
+            message: error.message
         })
 
     }
