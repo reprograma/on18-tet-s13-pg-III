@@ -68,9 +68,27 @@ const getById = async (req, res) => {
     }
 }
 
+const deleteById = async (req,res) => {
+    try {
+        const biblioteca = await BibliotecaSchema.findById(req.params.id)
+
+        await biblioteca.delete()
+
+        res.status(200).json({
+            mensagem: "Biblioteca removida do sistema"
+        })
+
+    } catch (error) {
+        res.status(400).json({
+            mensagem: error.message
+        })
+    }
+}
+
 module.exports = {
     criarBiblioteca,
     getBiblioteca,
-    getById
+    getById,
+    deleteById
 }
 

@@ -6,5 +6,6 @@ const controller = require("../controller/bibliotecaController");
 router.get("/", controller.getBiblioteca)
 router.post("/", controller.criarBiblioteca)
 router.get("/:id", controller.getById)
+router.delete("/:id", controller.deleteById)
 
 module.exports = router;
