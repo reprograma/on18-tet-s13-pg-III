@@ -2,16 +2,17 @@ const mongoose = require("mongoose");
 
 const bibliotecaSchema = new mongoose.Schema(
   {
-    id: {
-      type: mongoose.Types.ObjectId,
+    _id: {
+      type: mongoose.Schema.Types.ObjectId,
       default: mongoose.Types.ObjectId,
     },
+
     nome: {
       type: String,
       required: true,
     },
     cnpj: {
-      type: Number,
+      type: String,
       required: true,
     },
     telefone: {
@@ -19,60 +20,41 @@ const bibliotecaSchema = new mongoose.Schema(
       required: true,
     },
     iniciativa_privada: {
-      type: String,
+      type: Boolean,
       required: false,
-    },
-    endereco: {
-      type: String,
-      required: true,
-    },
-    cep: {
-      type: String,
-      required: true,
-    },
-    rua: {
-      type: String,
-      required: true,
-    },
-    numero: {
-      type: Number,
-      required: true,
-    },
-    complemento: {
-      type: String,
-      required: true,
-    },
-    referencia: {
-      type: String,
-      required: false,
-    },
-    estado: {
-      type: String,
-      required: true,
-    },
-    cidade: {
-      type: String,
-      required: true,
-    },
-    bairro: {
-      type: String,
-      required: true,
-    },
-    bairros_atuantes: {
-      type: String,
-      required: true,
-    },
-    site: {
-      type: String,
-      required: false,
-    },
-    atividades_disponiveis: {
-      type: String,
-      required: true,
-    },
-    pessoa_responsavel: {
-      type: String,
-      required: true,
+
+      endereco: {
+        cep: { type: String, required: true },
+
+        rua: { type: String, required: true },
+
+        numero: { type: Number, required: true },
+
+        complemento: { type: String, required: false },
+
+        referencia: { type: String, required: false },
+
+        estado: { type: String, required: true },
+
+        cidade: { type: String, required: true },
+
+        bairro: { type: String, required: true },
+
+        bairros_atuantes: { type: String, required: true },
+      },
+
+      site: {
+        type: String,
+        required: false,
+      },
+      atividades_disponiveis: {
+        type: String,
+        required: true,
+      },
+      pessoa_responsavel: {
+        type: String,
+        required: true,
+      },
     },
   },
 
