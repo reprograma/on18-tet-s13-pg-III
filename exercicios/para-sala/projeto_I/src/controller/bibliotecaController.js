@@ -1,8 +1,9 @@
+const mongoose = require("mongoose");
+
 const BibliotecaSchema = require("../models/BibliotecaSchema");
 
 const criarBiblioteca = async (req, res) => {
     const {
-        id,
         nome,
         cnpj,
         telefone,
@@ -10,35 +11,36 @@ const criarBiblioteca = async (req, res) => {
         endereco,
         bairros, 
         site, 
-        atividades, 
-        responsavel} = request.body
+        atividades_disponiveis, 
+        responsavel
+    } = req.body
     
     try {
         const biblioteca = new BibliotecaSchema({
-            _id: id,
-        
+            nome:nome,
+            cnpj: cnpj,
+            telefone: telefone,
+            iniciativa_privada: iniciativa_privada,
+            endereco: endereco,
+            bairros: bairros,
+            site: site,
+            atividades_disponiveis: atividades_disponiveis,
+            responsavel: responsavel        
+        })
+
+        const salvarBiblioteca = await biblioteca.save();
+
+        res.status(201).json({
+            biblioteca: salvarBiblioteca
         })
     } catch (error) {
-        
+        res.status(400).json({
+            message:error.message
+        })
     }
 }
 
-// //
-// - _id: autogerado e obrigatório;
-// - nome: texto e obrigatório;
-// - cnpj: string e obrigatorio;
-// - telefone: string;
-// - É uma iniciativa privada? : Boolean
-// - endereco: objeto com: 
-//   - cep: string e obrigatório, 
-//   - rua: string e obrigatório, 
-//   - numero: number e obrigatório, 
-//   - complemento: string e opcional, 
-//   - referencia: string e opcional, 
-//   - estado: string e obrigatório, 
-//   - cidade: string e obrigatório, 
-//   - bairro: string e obrigatório;
-// - bairros que atuam: array;
-// - site: texto e não obrigatório;
-// - atividades disponíveis: array;
-// - Pessoa responsável pela biblioteca: string e obrigatório;
+module.exports = {
+    criarBiblioteca
+}
+
