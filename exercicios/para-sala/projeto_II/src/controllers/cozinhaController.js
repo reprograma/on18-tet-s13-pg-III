@@ -38,7 +38,19 @@ const exibeCozinhas = async (req,res)=>{
   }
 }
 
+const buscarCozinhaPorId = async (req,res)=>{
+  try {
+    const cozinhas = await cozinhaSchema.findById(req.params.id)
+    res.status(200).json(cozinhas)
+  } catch (error) {
+    res.status(500).json({
+      mensagem: error.message
+    })
+  }
+}
+
 module.exports = {
     cadastrarCozinha,
-    exibeCozinhas
+    exibeCozinhas,
+    buscarCozinhaPorId
 }
