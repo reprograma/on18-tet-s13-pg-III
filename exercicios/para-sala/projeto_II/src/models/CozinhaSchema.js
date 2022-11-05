@@ -7,7 +7,7 @@ const cozinhaSchema = new mongoose.Schema({
 
     },
     cnpj:{
-        type: Number,
+        type: Number, 
         required: true
 
     },
@@ -16,9 +16,9 @@ const cozinhaSchema = new mongoose.Schema({
         required: true
         
     },
-    endereco:{
+    endereco:[{  
         cep:{
-        type: Number,
+        type: String,
         required: true
         },
         rua:{
@@ -26,7 +26,7 @@ const cozinhaSchema = new mongoose.Schema({
         required: true
         },
         numero:{
-        type: Number,
+        type: String,
         required: true
         },
         complemento:{
@@ -46,14 +46,12 @@ const cozinhaSchema = new mongoose.Schema({
         required: true
         },
         bairro:{
-        type: String,
+        type: Array,
         required: true
         },
-
-
-    },
-    bairros: {
-        type: String,
+    }],
+    bairros_atuacao: {
+        type: Array,
         required: true
     },
     site:{
@@ -61,7 +59,7 @@ const cozinhaSchema = new mongoose.Schema({
         required: false
     },
     atividades_disponiveis:{
-        type: String,
+        type: Array,
         required: true
     },
     responsavel_cozinha: {
