@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose")
 const { Schema } = mongoose;
 
 const enderecoSchema = new Schema({
@@ -23,7 +23,7 @@ const bibliotecaSchema = new Schema({
     site: {type: String, required: false},
     atividades: [String],
     responsavel: {type: String, required: true}
-})
+}, { timestamps: true })
 
 const Biblioteca = mongoose.model("Biblioteca", bibliotecaSchema)
 
