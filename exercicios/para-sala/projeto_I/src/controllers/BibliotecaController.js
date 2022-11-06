@@ -9,7 +9,6 @@ const buscarBibliotecas = async(req, res) => {
         res.status(400).json({
             message: error.message
         })
-        console.log(error.message)
     }
 }
 
@@ -19,7 +18,9 @@ const buscarBibliotecaPorId = async(req, res) => {
 
         return res.status(200).json({bibliotecas})
     } catch(error) {
-        message: error.message
+        res.status(400).json({
+            message: error.message
+        })
     }
 }
 
@@ -77,10 +78,20 @@ const criarBiblioteca = async(req, res) => {
     }
 }
 
+const deletarBiblioteca = (req ,res) => {
+    try{
+        const bibliotecaDeletada = Biblioteca.findOneAndDelete(req.params.id)
+
+        res.status(200).json({bibliotecaDeletada})
+    } catch(error) {
+        res.status(400).json({error: error.message})
+    }
+}
 
 module.exports = {
     buscarBibliotecas,
     buscarBibliotecaPorId,
-    criarBiblioteca
+    criarBiblioteca,
+    deletarBiblioteca
 }
 
