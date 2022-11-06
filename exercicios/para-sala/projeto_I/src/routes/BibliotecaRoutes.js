@@ -1,12 +1,13 @@
 const express = require('express');
-
-const routes = express.Router();
 const bibliotecaController = require("../controllers/BibliotecaController")
+const router = express.Router();
 
-routes.get("/biblioteca", bibliotecaController.buscarBibliotecas)
+router.get("/biblioteca", bibliotecaController.buscarBibliotecas)
 
-routes.get("/biblioteca/:id", bibliotecaController.buscarBibliotecaPorId)
+router.get("/biblioteca/:id", bibliotecaController.buscarBibliotecaPorId)
 
-routes.post("/biblioteca", bibliotecaController.criarBiblioteca)
+router.post("/biblioteca", bibliotecaController.criarBiblioteca)
 
-module.exports = routes;
+router.delete("/biblioteca", bibliotecaController.deletarBiblioteca)
+
+module.exports = router;
