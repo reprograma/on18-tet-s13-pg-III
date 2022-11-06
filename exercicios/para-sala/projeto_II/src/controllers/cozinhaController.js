@@ -4,6 +4,9 @@ const CozinhaSchema = require("../models/CozinhaSchema");
 const buscarTodasCozinhas = async (request, response) => {
     try {
         const cozinha = await CozinhaSchema.find()
+        if (cozinha.length == 0) {
+            return response.status(200).json({ message: `Cozinha não encontrada` })
+        }
         response.status(200).json(cozinha)
     } catch (error) {
         response.status(500).json({
@@ -13,9 +16,15 @@ const buscarTodasCozinhas = async (request, response) => {
 }
 
 const buscarCozinhaId = async (request, response) => {
-    const idSolicitado = request.params
+    const { id } = request.params
     try {
-        const cozinha = await CozinhaSchema.find({ id: idSolicitado.id })
+        if (id.length < 24 || id.length > 24) {
+            return response.status(404).json({ message: `Por favor digite o id da cozinha corretamente. São 24 caracteres.` })
+        }
+        const cozinha = await CozinhaSchema.find({ id: id })
+        if (cozinha.length == 0) {
+            return response.status(200).json({ message: `Cozinha não encontrada` })
+        }
         response.status(200).json(cozinha)
     } catch (error) {
         response.status(500).json({
@@ -83,14 +92,13 @@ const deletarCozinha = async (request, response) => {
         if (id.length < 24 || id.length > 24) {
             return response.status(404).json({ message: `Por favor digite o id da cozinha corretamente. São 24 caracteres.` })
         }
+        const cozinha = await CozinhaSchema.find({ id: id })
         const cozinhaEncontrada = await CozinhaSchema.deleteOne({ id: id })
-        console.log(cozinhaEncontrada)
-        if (cozinhaEncontrada.deletedCount === 1) {
-            return response.status(200).send({ message: "Cozinha deletada com sucesso!" })
+        if (cozinhaEncontrada.deletedCount === 1 || cozinha.length > 0) {
+            return response.status(200).send({ message: `Cozinha  deletada com sucesso!` })
         } else {
             return response.status(404).send({ message: "Cozinha não encontrada." })
         }
-
     } catch (error) {
         response.status(500).json({
             message: error.message
@@ -98,15 +106,15 @@ const deletarCozinha = async (request, response) => {
     }
 }
 
-// const atualizarCozinha = async (request, response) => {
+const atualizarCozinha = async (request, response) => {
 
-// }
+}
 
 
 module.exports = {
     buscarTodasCozinhas,
     buscarCozinhaId,
     criarCozinha,
-    deletarCozinha
-    //atualizarCozinha
+    deletarCozinha,
+    atualizarCozinha
 }
