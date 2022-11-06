@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
-const BibliotecaSchema = new mongoose.Schema('Biblioteca', {
-    _id: new mongoose.Types.ObjectId,
+const BibliotecaSchema = new mongoose.Schema({
     nome: { type: String, required: true },
     cnpj: { type: String, required: true },
     telefone: String,
@@ -22,4 +21,6 @@ const BibliotecaSchema = new mongoose.Schema('Biblioteca', {
     pessoaResponsavel: { type: String, required: true}
 })
 
-module.exports = Biblioteca = mongoose.model('Biblioteca', BibliotecaSchema)
+const Biblioteca = mongoose.model('Biblioteca', BibliotecaSchema)
+
+module.exports = Biblioteca
