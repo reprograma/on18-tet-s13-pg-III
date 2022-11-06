@@ -1,8 +1,31 @@
 const mongoose = require("mongoose");
 const CozinhaSchema = require("../models/CozinhaSchema");
 
+const buscarTodasCozinhas = async (request, response) => {
+    try {
+        const cozinha = await CozinhaSchema.find()
+        response.status(200).json(cozinha)
+    } catch (error) {
+        response.status(500).json({
+            message: error.message
+        })
+    }
+}
+
+const buscarCozinhaId = async (request, response) => {
+    const idSolicitado = request.params
+    try {
+        const cozinha = await CozinhaSchema.find({ id: idSolicitado.id })
+        response.status(200).json(cozinha)
+    } catch (error) {
+        response.status(500).json({
+            message: error.message
+        })
+    }
+}
+
 const criarCozinha = async (request, response) => {
-    const { nome, cnpj, iniciativa_privada,
+    const { id, nome, cnpj, iniciativa_privada,
         endereco: { cep, rua, numero, complemento, referencia, estado, cidade, bairro },
         bairros_atuantes, site, atividades_disponiveis, pessoa_responsavel } = request.body;
 
@@ -21,6 +44,7 @@ const criarCozinha = async (request, response) => {
     }
     try {
         const cozinha = new CozinhaSchema({
+            id: id,
             nome: nome,
             cnpj: cnpj,
             iniciativa_privada: iniciativa_privada,
@@ -52,33 +76,26 @@ const criarCozinha = async (request, response) => {
     }
 }
 
-const buscarCozinha = async (request, response) => {
-    const { nome } = request.query
-    let query = {};
-    if (nome) query.nome = new RegExp(nome, 'i');
-    try {
-        const cozinha = await CozinhaSchema.find(query)
-        response.status(200).json(cozinha)
-    } catch (error) {
-        response.status(500).json({
-            message: error.message
-        })
-    }
-}
+// const deletarCozinha = async (request, response) => {
+//     const idSolicitado = request.params
+//     try {
+//         const cozinhaIndice = await CozinhaSchema.findIndex({ id: idSolicitado.id })
+//         if (cozinhaIndice === -1) return res.status(404).send({
+//             message: "Cozinha não encontrada."
+//         })
+//         cozinha.splice(cozinhaIndice, 1)
+//         res.status(200).send({ message: "Cozinha deletada com sucesso!" })
+//     } catch (error) {
+//         response.status(500).json({
+//             message: error.message
+//         })
+//     }
+// }
 
-const buscarTodasCozinhas = async (request, response) => {
-    try {
-        const cozinha = await CozinhaSchema.find()
-        response.status(200).json(cozinha)
-    } catch (error) {
-        response.status(500).json({
-            message: error.message
-        })
-    }
-}
 
 module.exports = {
-    criarCozinha,
-    buscarCozinha,
-    buscarTodasCozinhas
+    buscarTodasCozinhas,
+    buscarCozinhaId,
+    criarCozinha
+    // deletarCozinha
 }

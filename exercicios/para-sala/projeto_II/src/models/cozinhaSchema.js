@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const cozinhaSchema = new mongoose.Schema({
+    id: {
+        type: mongoose.Types.ObjectId,
+        default: mongoose.Types.ObjectId
+    },
     nome: {
         type: String,
         required: true
