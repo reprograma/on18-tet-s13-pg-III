@@ -50,8 +50,35 @@ const criarCozinha = async (request, response) => {
         })
 
     }
-
 }
+
+const buscarCozinha = async (request, response) => {
+    const { nome } = request.query
+    let query = {};
+    if (nome) query.nome = new RegExp(nome, 'i');
+    try {
+        const cozinha = await CozinhaSchema.find(query)
+        response.status(200).json(cozinha)
+    } catch (error) {
+        response.status(500).json({
+            message: error.message
+        })
+    }
+}
+
+const buscarTodasCozinhas = async (request, response) => {
+    try {
+        const cozinha = await CozinhaSchema.find()
+        response.status(200).json(cozinha)
+    } catch (error) {
+        response.status(500).json({
+            message: error.message
+        })
+    }
+}
+
 module.exports = {
-    criarCozinha
+    criarCozinha,
+    buscarCozinha,
+    buscarTodasCozinhas
 }

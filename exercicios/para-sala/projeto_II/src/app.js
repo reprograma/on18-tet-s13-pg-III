@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.use("/cozinha", cozinhaRoutes);
+app.use("/cozinha-comunitaria", cozinhaRoutes);
 
 database.connect();
 
