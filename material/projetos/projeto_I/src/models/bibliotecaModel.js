@@ -12,11 +12,20 @@ const enderecoSchema = new Schema({
   bairro: { type: String, required: true },
 });
 
+const cnpjValidator = async (val) => {
+  const count = await Biblioteca.countDocuments({ cnpj: val });
+  return !count;
+};
+
 const bibliotecaSchema = new Schema(
   {
     _id: mongoose.ObjectId,
     nome: { type: String, required: true },
-    cnpj: { type: String, required: true },
+    cnpj: {
+      type: String,
+      required: true,
+      validate: [cnpjValidator, "Already Exists!"],
+    },
     telefone: { type: String, required: true },
     privada: { type: Boolean, required: true },
     endereco: { type: enderecoSchema, required: true },

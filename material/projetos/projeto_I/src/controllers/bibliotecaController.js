@@ -55,12 +55,14 @@ const deleteById = async (req, res) => {
 
 const patchById = async (req, res) => {
   mongoose.connect(uri);
-  const result = await Biblioteca.findByIdAndUpdate(req.params.id, req.body);
+  const result = await Biblioteca.findByIdAndUpdate(req.params.id, req.body, {
+    runValidators: true,
+  });
   const updatedResult = await Biblioteca.findById(req.params.id);
   res.status(200).send({
     message: `Biblioteca ID: ${req.params.id} - Updated Successfully`,
     before: result,
-    updated: updatedResult,
+    after: updatedResult,
   });
 };
 
