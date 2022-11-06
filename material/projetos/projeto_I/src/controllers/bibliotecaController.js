@@ -47,12 +47,21 @@ const post = async (req, res) => {
 const deleteById = async (req, res) => {
   mongoose.connect(uri);
   const result = await Biblioteca.findByIdAndDelete(req.params.id);
-  res
-    .status(200)
-    .send({
-      message: `Biblioteca ID: ${req.params.id} - Removed Successfully`,
-      deleted: result,
-    });
+  res.status(200).send({
+    message: `Biblioteca ID: ${req.params.id} - Removed Successfully`,
+    deleted: result,
+  });
 };
 
-module.exports = { tryCatchWrapper, get, post, getById, deleteById };
+const patchById = async (req, res) => {
+  mongoose.connect(uri);
+  const result = await Biblioteca.findByIdAndUpdate(req.params.id, req.body);
+  const updatedResult = await Biblioteca.findById(req.params.id);
+  res.status(200).send({
+    message: `Biblioteca ID: ${req.params.id} - Updated Successfully`,
+    before: result,
+    updated: updatedResult,
+  });
+};
+
+module.exports = { tryCatchWrapper, get, post, getById, deleteById, patchById };

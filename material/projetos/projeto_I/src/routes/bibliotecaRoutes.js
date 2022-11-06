@@ -6,5 +6,6 @@ routes.get("/", tryCatchWrapper(controller.get));
 routes.post("/", tryCatchWrapper(controller.post));
 routes.get("/:id", tryCatchWrapper(controller.getById));
 routes.delete("/:id", tryCatchWrapper(controller.deleteById));
+routes.patch("/:id", tryCatchWrapper(controller.patchById));
 
 module.exports = routes;
