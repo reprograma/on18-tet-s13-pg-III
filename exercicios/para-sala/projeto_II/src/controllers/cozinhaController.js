@@ -76,26 +76,37 @@ const criarCozinha = async (request, response) => {
     }
 }
 
-// const deletarCozinha = async (request, response) => {
-//     const idSolicitado = request.params
-//     try {
-//         const cozinhaIndice = await CozinhaSchema.findIndex({ id: idSolicitado.id })
-//         if (cozinhaIndice === -1) return res.status(404).send({
-//             message: "Cozinha não encontrada."
-//         })
-//         cozinha.splice(cozinhaIndice, 1)
-//         res.status(200).send({ message: "Cozinha deletada com sucesso!" })
-//     } catch (error) {
-//         response.status(500).json({
-//             message: error.message
-//         })
-//     }
+const deletarCozinha = async (request, response) => {
+    const { id } = request.params
+
+    try {
+        if (id.length < 24 || id.length > 24) {
+            return response.status(404).json({ message: `Por favor digite o id da cozinha corretamente. São 24 caracteres.` })
+        }
+        const cozinhaEncontrada = await CozinhaSchema.deleteOne({ id: id })
+        console.log(cozinhaEncontrada)
+        if (cozinhaEncontrada.deletedCount === 1) {
+            return response.status(200).send({ message: "Cozinha deletada com sucesso!" })
+        } else {
+            return response.status(404).send({ message: "Cozinha não encontrada." })
+        }
+
+    } catch (error) {
+        response.status(500).json({
+            message: error.message
+        })
+    }
+}
+
+// const atualizarCozinha = async (request, response) => {
+
 // }
 
 
 module.exports = {
     buscarTodasCozinhas,
     buscarCozinhaId,
-    criarCozinha
-    // deletarCozinha
+    criarCozinha,
+    deletarCozinha
+    //atualizarCozinha
 }
