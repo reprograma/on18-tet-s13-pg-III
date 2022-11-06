@@ -5,5 +5,6 @@ const { tryCatchWrapper } = controller;
 routes.get("/", tryCatchWrapper(controller.get));
 routes.post("/", tryCatchWrapper(controller.post));
 routes.get("/:id", tryCatchWrapper(controller.getById));
+routes.delete("/:id", tryCatchWrapper(controller.deleteById));
 
 module.exports = routes;
