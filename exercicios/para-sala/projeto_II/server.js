@@ -3,4 +3,4 @@ const app = require("./src/app")
 
 const PORT = process.env.PORT
 
-app.listen(PORT, () => console.log('Sejam Bem vindes à Cozinha Comunitária. ')) 
+app.listen(PORT, () => console.log('Sejam Bem vindes à Cozinha Comunitária.')) 

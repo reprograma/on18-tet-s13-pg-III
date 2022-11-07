@@ -23,7 +23,7 @@ const buscarCozinhaId = async (request, response) => {
                 message: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres.`
             })
         }
-        const cozinha = await CozinhaSchema.find({ id: id })
+        const cozinha = await CozinhaSchema.find({ id })
         if (cozinha.length == 0) {
             return response.status(200).json({ message: `A cozinha não foi encontrada.` })
         }
@@ -41,11 +41,11 @@ const criarCozinha = async (request, response) => {
         bairros_atuantes, site, atividades_disponiveis, pessoa_responsavel } = request.body;
 
     //retorna uma array de objetos
-    const buscaBairro = await CozinhaSchema.find({ bairro: bairro })
+    const buscaBairro = await CozinhaSchema.find({ bairro })
     //filtrei as cozinhas que tem o bairro que a pessoa digitou
-    let ExisteBairro = buscaBairro.filter((cozinha) => cozinha.endereco.bairro === bairro)
+    let existeBairro = buscaBairro.filter((cozinha) => cozinha.endereco.bairro === bairro)
     //verifiquei se vai encontrar no array do filter UMA cozinha
-    let nomeExisteBairro = ExisteBairro.find((cozinha) => cozinha.nome === nome)
+    let nomeExisteBairro = existeBairro.find((cozinha) => cozinha.nome === nome)
     if (nomeExisteBairro) {
         return response.status(404).json({ message: `Não é possível cadastrar esta cozinha, esse nome já existe neste bairro` });
     }
@@ -93,7 +93,7 @@ const deletarCozinha = async (request, response) => {
         if (id.length < 24 || id.length > 24) {
             return response.status(404).json({ message: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres.` })
         }
-        const cozinhaEncontrada = await CozinhaSchema.deleteOne({ id: id })
+        const cozinhaEncontrada = await CozinhaSchema.deleteOne({ id })
         if (cozinhaEncontrada.deletedCount === 1) {
             return response.status(200).send({ message: `A cozinha foi deletada com sucesso!` })
         } else {
@@ -122,13 +122,13 @@ const atualizarCozinha = async (request, response) => {
             endereco: { cep, rua, numero, complemento, referencia, estado, cidade, bairro },
             bairros_atuantes, site, atividades_disponiveis, pessoa_responsavel
         })
-        const cozinhaporId = await CozinhaSchema.find({ id: id })
-        if (cozinhaporId.length == 0) {
+        const cozinhaAtualizada = await CozinhaSchema.find({ id })
+        if (cozinhaAtualizada.length == 0) {
             return response.status(404).json({
                 message: `A cozinha não foi encontrada.`
             })
         }
-        response.json({ cozinhaporId })
+        response.json({ cozinhaAtualizada })
     } catch (error) {
         response.status(500).json({
             message: error.message
