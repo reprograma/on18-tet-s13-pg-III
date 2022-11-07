@@ -4,10 +4,13 @@ const CozinhaSchema = require("../models/CozinhaSchema");
 const buscarTodasCozinhas = async (request, response) => {
     try {
         const cozinha = await CozinhaSchema.find()
-        if (cozinha.length == 0) {
-            return response.status(200).json({ message: `Nenhuma cozinha está cadastrada até o momento.` })
+        if (cozinha.length > 1) {
+            return response.status(200).json({ message: `Encontramos ${cozinha.length} cozinhas.`, cozinha })
+        } else if (cozinha.length == 1) {
+            return response.status(200).json({ message: `Encontramos ${cozinha.length} cozinha.`, cozinha })
+        } else {
+            return response.status(200).json({ message: `Não encontramos nenhuma cozinha até o momento.`, cozinha })
         }
-        response.status(200).json(cozinha)
     } catch (error) {
         response.status(500).json({
             message: error.message
