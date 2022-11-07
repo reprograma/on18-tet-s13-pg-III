@@ -21,20 +21,14 @@ const buscarTodasCozinhas = async (request, response) => {
 const buscarCozinhaId = async (request, response) => {
     const { id } = request.params
     try {
-        if (id.length > 1) {
-            caracter = `Caracteres`
-        } else {
-            caracter = `Caracter`
-        }
-
         if (id.length > 24) {
             return response.status(404).json({
-                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. ${caracter} a mais: ${id.length - 24}.`
+                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. Caracter a mais: ${id.length - 24}.`
             })
         }
         if (id.length < 24) {
             return response.status(404).json({
-                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. ${caracter} a menos: ${24 - id.length}.`
+                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. Caracter a menos: ${24 - id.length}.`
             })
         }
         const cozinha = await CozinhaSchema.find({ id })
@@ -62,6 +56,12 @@ const criarCozinha = async (request, response) => {
     const buscaCnpj = await CozinhaSchema.find({ cnpj })
     if (buscaCnpj.length !== 0) {
         return response.status(400).json({ message: `Não é possível cadastrar, pois, esse número de cnpj já existe` });
+    }
+    if (String(cnpj).length > 14) {
+        return response.status(400).json({ Alerta: `Este CNPJ é inválido. Caracter a mais: ${Number(String(cnpj).length) - 14}` });
+    }
+    if (String(cnpj).length < 14) {
+        return response.status(400).json({ Alerta: `Este CNPJ é inválido. Caracter a menos: ${14 - Number(String(cnpj).length)}` });
     }
     try {
         const cozinha = new CozinhaSchema({
@@ -133,21 +133,21 @@ const atualizarCozinha = async (request, response) => {
         endereco: { cep, rua, numero, complemento, referencia, estado, cidade, bairro },
         bairros_atuantes, site, atividades_disponiveis, pessoa_responsavel } = request.body;
     try {
-        if (id.length > 1) {
-            caracter = `Caracteres`
-        } else {
-            caracter = `Caracter`
-        }
-
         if (id.length > 24) {
             return response.status(404).json({
-                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. ${caracter} a mais: ${id.length - 24}.`
+                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. Caracter a mais: ${id.length - 24}.`
             })
         }
         if (id.length < 24) {
             return response.status(404).json({
-                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. ${caracter} a menos: ${24 - id.length}.`
+                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. Caracter a menos: ${24 - id.length}.`
             })
+        }
+        if (String(cnpj).length > 14) {
+            return response.status(400).json({ Alerta: `Este CNPJ é inválido. Caracter a mais: ${Number(String(cnpj).length) - 14}` });
+        }
+        if (String(cnpj).length < 14) {
+            return response.status(400).json({ Alerta: `Este CNPJ é inválido. Caracter a menos: ${14 - Number(String(cnpj).length)}` });
         }
         const cozinhaEncontrada = await CozinhaSchema.updateOne({
             nome, cnpj, iniciativa_privada,
