@@ -1,0 +1,19 @@
+{
+  "name": "on18-tet-s13-pg-iii",
+  "version": "1.0.0",
+  "description": "<h1 align=\"center\">   <img src=\"assets/reprograma-fundos-claros.png\" alt=\"logo reprograma\" width=\"500\"> </h1>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Samanta00/on18-tet-s13-pg-III.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Samanta00/on18-tet-s13-pg-III/issues"
+  },
+  "homepage": "https://github.com/Samanta00/on18-tet-s13-pg-III#readme"
+}
