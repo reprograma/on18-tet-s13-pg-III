@@ -30,7 +30,76 @@ const criarBiblioteca = async(req, res) =>{
 }
 }
 
+const buscarBiblioteca = async(req, res)=> {
+    try {
+        const biblioteca = await bibliotecaSchema.find()
+                
+         res.status(200).send(biblioteca)
+         console.log(biblioteca)
+    } catch (error) {
+        res.status(400).json({
+            mensagem: "biblioteca não encontrada",
+    })
+}
+}
+
+const buscaBibliotecaPorId = async(req, res)=>{
+    try {
+        
+        const bibliotecaEncontrada = await bibliotecaSchema.findById(req.params.id)
+         
+          if (bibliotecaEncontrada == undefined){
+            return res.status(404).send({menssage: "Biblioteca não encontrada"})
+        }
+
+        res.status(200).send(bibliotecaEncontrada)
+                     
+    } catch (error) {
+        res.status(500).send({message:"erro"})        
+    }
+
+}
+
+const deletarBibliotecaPorId = async(req, res)=>{
+    try {
+        
+        const bibliotecaEncontrada = await bibliotecaSchema.findById(req.params.id)
+                  
+          if (bibliotecaEncontrada == undefined){
+            return res.status(404).send({menssage: "Biblioteca não encontrada"})
+        }
+       
+        await bibliotecaEncontrada.delete()
+        res.status(200).json({mensagem: `Paciente removida do sistema.`})
+                     
+    } catch (error) {
+        res.status(400).json({message:"erro"})        
+    }
+
+}
+
+const atualizarBiblioteca = async(req, res)=>{
+    try {
+        let bibliotecas = await bibliotecaSchema.findById(req.params.id)
+        let novoNome = req.body.nome
+        let bibliotecaEncontrada = bibliotecas.findById(biblioteca =>biblioteca.id == id)
+        bibliotecaEncontrada.nome = novoNome
+        res.status(200).json({
+            "mensagem": "Nome atualizado com sucesso"
+        })
+
+    } catch (error) {
+        res.status(400).json({message:"erro"}) 
+    }
+}
+
 
 module.exports = {
-    criarBiblioteca
-}
+    criarBiblioteca,
+    buscarBiblioteca,
+    buscaBibliotecaPorId,
+    deletarBibliotecaPorId,
+    atualizarBiblioteca 
+
+     
+} 
