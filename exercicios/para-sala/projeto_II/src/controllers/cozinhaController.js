@@ -53,19 +53,15 @@ const criarCozinha = async (request, response) => {
     const { id, nome, cnpj, iniciativa_privada,
         endereco: { cep, rua, numero, complemento, referencia, estado, cidade, bairro },
         bairros_atuantes, site, atividades_disponiveis, pessoa_responsavel } = request.body;
-
-    //retorna uma array de objetos
     const buscaBairro = await CozinhaSchema.find({ bairro })
-    //filtrei as cozinhas que tem o bairro que a pessoa digitou
     let existeBairro = buscaBairro.filter((cozinha) => cozinha.endereco.bairro === bairro)
-    //verifiquei se vai encontrar no array do filter UMA cozinha
     let nomeExisteBairro = existeBairro.find((cozinha) => cozinha.nome === nome)
     if (nomeExisteBairro) {
         return response.status(404).json({ message: `Não é possível cadastrar esta cozinha, esse nome já existe neste bairro` });
     }
     const buscaCnpj = await CozinhaSchema.find({ cnpj })
-    if (buscaCnpj.length !== 0) {//array zerado ou array encontrado
-        return response.status(400).json({ message: `Não é possível cadastrar,pois, esse número de cnpj já existe` });
+    if (buscaCnpj.length !== 0) {
+        return response.status(400).json({ message: `Não é possível cadastrar, pois, esse número de cnpj já existe` });
     }
     try {
         const cozinha = new CozinhaSchema({
@@ -92,20 +88,31 @@ const criarCozinha = async (request, response) => {
         response.status(201).json({
             cozinha: salvarCozinha
         })
-
     } catch (error) {
         response.status(400).json({
             message: error.message
         })
-
     }
 }
 
 const deletarCozinha = async (request, response) => {
     const { id } = request.params
     try {
-        if (id.length < 24 || id.length > 24) {
-            return response.status(404).json({ message: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres.` })
+        if (id.length > 1) {
+            caracter = `Caracteres`
+        } else {
+            caracter = `Caracter`
+        }
+
+        if (id.length > 24) {
+            return response.status(404).json({
+                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. ${caracter} a mais: ${id.length - 24}.`
+            })
+        }
+        if (id.length < 24) {
+            return response.status(404).json({
+                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. ${caracter} a menos: ${24 - id.length}.`
+            })
         }
         const cozinhaEncontrada = await CozinhaSchema.deleteOne({ id })
         if (cozinhaEncontrada.deletedCount === 1) {
@@ -126,9 +133,20 @@ const atualizarCozinha = async (request, response) => {
         endereco: { cep, rua, numero, complemento, referencia, estado, cidade, bairro },
         bairros_atuantes, site, atividades_disponiveis, pessoa_responsavel } = request.body;
     try {
-        if (id.length < 24 || id.length > 24) {
+        if (id.length > 1) {
+            caracter = `Caracteres`
+        } else {
+            caracter = `Caracter`
+        }
+
+        if (id.length > 24) {
             return response.status(404).json({
-                message: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres.`
+                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. ${caracter} a mais: ${id.length - 24}.`
+            })
+        }
+        if (id.length < 24) {
+            return response.status(404).json({
+                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. ${caracter} a menos: ${24 - id.length}.`
             })
         }
         const cozinhaEncontrada = await CozinhaSchema.updateOne({
