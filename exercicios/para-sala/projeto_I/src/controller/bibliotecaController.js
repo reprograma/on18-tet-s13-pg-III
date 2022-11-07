@@ -28,6 +28,12 @@ const criarBiblioteca = async (req, res) => {
             responsavel: responsavel        
         })
 
+        const verificaCnpj = BibliotecaSchema.find({cnpj})
+        if (verificaCnpj.length !== 0){
+            return res.status(409).json({mensagem:"Esse CNPJ já existe em nossos registros"})
+        }
+        // const verificaEndereco = BibliotecaSchema.find()
+        
         const salvarBiblioteca = await biblioteca.save();
 
         res.status(201).json({
