@@ -9,7 +9,7 @@ const buscarTodasCozinhas = async (request, response) => {
         } else if (cozinha.length == 1) {
             return response.status(200).json({ message: `Encontramos ${cozinha.length} cozinha.`, cozinha })
         } else {
-            return response.status(200).json({ message: `Não encontramos nenhuma cozinha até o momento.`, cozinha })
+            return response.status(200).json({ message: `Não encontramos nenhuma cozinha até o momento.` })
         }
     } catch (error) {
         response.status(500).json({
@@ -21,16 +21,27 @@ const buscarTodasCozinhas = async (request, response) => {
 const buscarCozinhaId = async (request, response) => {
     const { id } = request.params
     try {
-        if (id.length < 24 || id.length > 24) {
+        if (id.length > 1) {
+            caracter = `Caracteres`
+        } else {
+            caracter = `Caracter`
+        }
+
+        if (id.length > 24) {
             return response.status(404).json({
-                message: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres.`
+                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. ${caracter} a mais: ${id.length - 24}.`
+            })
+        }
+        if (id.length < 24) {
+            return response.status(404).json({
+                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. ${caracter} a menos: ${24 - id.length}.`
             })
         }
         const cozinha = await CozinhaSchema.find({ id })
         if (cozinha.length == 0) {
             return response.status(200).json({ message: `A cozinha não foi encontrada.` })
         }
-        response.status(200).json(cozinha)
+        response.status(200).json({ Prezades: `Segue a cozinha para este id [${id}]:`, cozinha })
     } catch (error) {
         response.status(500).json({
             message: error.message
