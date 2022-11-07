@@ -9,7 +9,7 @@ const criarBiblioteca = async (req, res) => {
         telefone,
         iniciativa_privada,
         endereco,
-        bairros, 
+        bairros_atuantes, 
         site, 
         atividades_disponiveis, 
         responsavel
@@ -22,7 +22,7 @@ const criarBiblioteca = async (req, res) => {
             telefone: telefone,
             iniciativa_privada: iniciativa_privada,
             endereco: endereco,
-            bairros: bairros,
+            bairros_atuantes: bairros_atuantes,
             site: site,
             atividades_disponiveis: atividades_disponiveis,
             responsavel: responsavel        
@@ -52,9 +52,7 @@ const getBiblioteca = async (req, res) => {
             mensagem: error.message
         })
     }
-
-
-} 
+}
 
 const getById = async (req, res) => {
     try {
@@ -85,10 +83,29 @@ const deleteById = async (req,res) => {
     }
 }
 
+const atualizaTelefone = async (req, res) => {
+    const {telefone} = req.body
+    const {id} = req.params
+    try {              
+        const biblioteca = await BibliotecaSchema.findOneAndUpdate({id},{telefone})
+        
+        await biblioteca.save()
+
+        res.status(200).json({mensagem:"Cadastro atualizado com sucesso"})
+
+    } catch (error) {
+        res.status(400).json({
+            mensagem: error.message
+        })
+    }
+}
+
 module.exports = {
     criarBiblioteca,
     getBiblioteca,
     getById,
-    deleteById
+    deleteById,
+    atualizaTelefone
+
 }
 
