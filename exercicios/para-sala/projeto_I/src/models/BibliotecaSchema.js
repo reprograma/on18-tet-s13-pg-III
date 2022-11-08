@@ -63,15 +63,15 @@ const bibliotecaSchema = new mongoose.Schema({
     site:{
         type: String,
         required:false
-},
+    },
 atividades_disponiveis:{
         type: Array,
         required: false
-},
+    },
 pessoa_responsavel_pela_biblioteca :{
         type: String,
         required: true
-},
+    },
 
 },
 
