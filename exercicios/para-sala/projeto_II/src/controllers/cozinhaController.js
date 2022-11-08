@@ -9,7 +9,7 @@ const buscarTodasCozinhas = async (request, response) => {
         } else if (cozinha.length == 1) {
             return response.status(200).json({ message: `Encontramos ${cozinha.length} cozinha.`, cozinha })
         } else {
-            return response.status(200).json({ message: `Não encontramos nenhuma cozinha até o momento.` })
+            return response.status(404).json({ message: `Não encontramos nenhuma cozinha até o momento.` })
         }
     } catch (error) {
         response.status(500).json({
@@ -22,18 +22,18 @@ const buscarCozinhaId = async (request, response) => {
     const { id } = request.params
     try {
         if (id.length > 24) {
-            return response.status(404).json({
+            return response.status(401).json({
                 Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. Caracter a mais: ${id.length - 24}.`
             })
         }
         if (id.length < 24) {
-            return response.status(404).json({
+            return response.status(401).json({
                 Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. Caracter a menos: ${24 - id.length}.`
             })
         }
         const cozinha = await CozinhaSchema.find({ id })
         if (cozinha.length == 0) {
-            return response.status(200).json({ message: `A cozinha não foi encontrada.` })
+            return response.status(404).json({ message: `A cozinha não foi encontrada.` })
         }
         response.status(200).json({ Prezades: `Segue a cozinha para este id [${id}]:`, cozinha })
     } catch (error) {
@@ -51,17 +51,17 @@ const criarCozinha = async (request, response) => {
     let existeBairro = buscaBairro.filter((cozinha) => cozinha.endereco.bairro === bairro)
     let nomeExisteBairro = existeBairro.find((cozinha) => cozinha.nome === nome)
     if (nomeExisteBairro) {
-        return response.status(404).json({ message: `Não é possível cadastrar esta cozinha, esse nome já existe neste bairro` });
+        return response.status(400).json({ message: `Não é possível cadastrar esta cozinha, esse nome já existe neste bairro` });
     }
     const buscaCnpj = await CozinhaSchema.find({ cnpj })
     if (buscaCnpj.length !== 0) {
         return response.status(400).json({ message: `Não é possível cadastrar, pois, esse número de cnpj já existe` });
     }
     if (String(cnpj).length > 14) {
-        return response.status(400).json({ Alerta: `Este CNPJ é inválido. Caracter a mais: ${Number(String(cnpj).length) - 14}` });
+        return response.status(401).json({ Alerta: `Este CNPJ é inválido. Caracter a mais: ${Number(String(cnpj).length) - 14}` });
     }
     if (String(cnpj).length < 14) {
-        return response.status(400).json({ Alerta: `Este CNPJ é inválido. Caracter a menos: ${14 - Number(String(cnpj).length)}` });
+        return response.status(401).json({ Alerta: `Este CNPJ é inválido. Caracter a menos: ${14 - Number(String(cnpj).length)}` });
     }
     try {
         const cozinha = new CozinhaSchema({
@@ -89,7 +89,7 @@ const criarCozinha = async (request, response) => {
             cozinha: salvarCozinha
         })
     } catch (error) {
-        response.status(400).json({
+        response.status(500).json({
             message: error.message
         })
     }
@@ -98,20 +98,14 @@ const criarCozinha = async (request, response) => {
 const deletarCozinha = async (request, response) => {
     const { id } = request.params
     try {
-        if (id.length > 1) {
-            caracter = `Caracteres`
-        } else {
-            caracter = `Caracter`
-        }
-
         if (id.length > 24) {
-            return response.status(404).json({
-                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. ${caracter} a mais: ${id.length - 24}.`
+            return response.status(401).json({
+                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. Caracter a mais: ${id.length - 24}.`
             })
         }
         if (id.length < 24) {
-            return response.status(404).json({
-                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. ${caracter} a menos: ${24 - id.length}.`
+            return response.status(401).json({
+                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. Caracter a menos: ${24 - id.length}.`
             })
         }
         const cozinhaEncontrada = await CozinhaSchema.deleteOne({ id })
@@ -134,20 +128,20 @@ const atualizarCozinha = async (request, response) => {
         bairros_atuantes, site, atividades_disponiveis, pessoa_responsavel } = request.body;
     try {
         if (id.length > 24) {
-            return response.status(404).json({
+            return response.status(401).json({
                 Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. Caracter a mais: ${id.length - 24}.`
             })
         }
         if (id.length < 24) {
-            return response.status(404).json({
+            return response.status(401).json({
                 Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. Caracter a menos: ${24 - id.length}.`
             })
         }
         if (String(cnpj).length > 14) {
-            return response.status(400).json({ Alerta: `Este CNPJ é inválido. Caracter a mais: ${Number(String(cnpj).length) - 14}` });
+            return response.status(401).json({ Alerta: `Este CNPJ é inválido. Caracter a mais: ${Number(String(cnpj).length) - 14}` });
         }
         if (String(cnpj).length < 14) {
-            return response.status(400).json({ Alerta: `Este CNPJ é inválido. Caracter a menos: ${14 - Number(String(cnpj).length)}` });
+            return response.status(401).json({ Alerta: `Este CNPJ é inválido. Caracter a menos: ${14 - Number(String(cnpj).length)}` });
         }
         const cozinhaEncontrada = await CozinhaSchema.updateOne({
             nome, cnpj, iniciativa_privada,
