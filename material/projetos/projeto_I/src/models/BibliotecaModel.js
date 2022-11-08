@@ -57,7 +57,7 @@ const bibliotecaSchema = new mongoose.Schema({
         }
     },
 
-    bairros_atuante:[
+    bairros_atuantes:[
 
     ],
 
