@@ -4,9 +4,9 @@ const controller = require("../controllers/bibliotecaController");
 
 router.post("/biblioteca", controller.criarBiblioteca);
 router.get("/biblioteca", controller.biblioteca);
-router.get("/:id", controller.buscarBibliotecaId);
-router.delete("/:id", controller.deletarBiblioteca);
-router.patch("/:id", controller.alterarBiblioteca);
+router.get("/biblioteca/:id", controller.buscarBibliotecaId);
+router.delete("/biblioteca/:id", controller.deletarBiblioteca);
+router.patch("/biblioteca/:id", controller.alterarBiblioteca);
 
 // DELETE "/biblioteca/[ID]" Deverá deletar uma biblioteca por id específico e retorna mensagem;
 

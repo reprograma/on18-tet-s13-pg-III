@@ -11,7 +11,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/biblioteca", bibliotecaRoutes);
+app.use("/ler-e-saber", bibliotecaRoutes);
 
 database.connect();
 

@@ -14,7 +14,7 @@ const criarBiblioteca = async (req, res) => {
     });
     const salvarBiblioteca = await biblioteca.save();
     res.status(201).json({
-      paciente: salvarBiblioteca,
+      biblioteca: salvarBiblioteca,
     });
   } catch (error) {
     res.status(400).json({
@@ -25,9 +25,13 @@ const criarBiblioteca = async (req, res) => {
 //Get
 const buscarBibliotecaId = async (req, res) => {
   const { id } = req.params;
-
+  if (id.length < 24 || id.length > 24) {
+    return res.status(404).json({
+      message: `Por favor digite o id da biblioteca com 24 caracteres.`,
+    });
+  }
   try {
-    const biblioteca = await BibliotecaSchema.findById(req.params.id);
+    const biblioteca = await BibliotecaSchema.find({ id });
     res.status(200).json(biblioteca);
   } catch (error) {
     res.status(500).json({
@@ -49,62 +53,90 @@ const biblioteca = async (req, res) => {
 
 //delete
 const deletarBiblioteca = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
-    const biblioteca = await BibliotecaSchema.findById(id);
-    if (biblioteca == null) {
+    if (id.length < 24 || id.length > 24) {
       return res.status(404).json({
-        message: "biblioteca com este id ${id} não encontrada",
+        message: `Por favor digite o id da biblioteca com 24 caracteres.`,
       });
     }
-    await biblioteca.remove();
-
-    res.status(200).json({
-      mensagem: `Biblioteca com este id ${id} removida do sistema.`,
-    });
+    const bibliotecaEncontrada = await BibliotecaSchema.deleteOne({ id });
+    if (bibliotecaEncontrada.deletedCount === 1) {
+      return res
+        .status(200)
+        .send({ message: `A biblioteca foi deletada com sucesso!` });
+    } else {
+      return res
+        .status(404)
+        .send({ message: "A biblioteca não foi encontrada." });
+    }
   } catch (error) {
-    res.status(400).json({
-      mensagem: error.message,
+    res.status(500).json({
+      message: error.message,
     });
   }
 };
 
 //patch
 const alterarBiblioteca = async (req, res) => {
-  const { id } = req.body;
-  const bibliotecas = await bibliotecas.BibliotecaSchema();
-  const biblioteca = bibliotecas.find((biblioteca) => biblioteca.id == id);
-  if (!biblioteca) {
-    return response.status(404).send({
-      message: `Biblioteca com o ${id} não encontrado!`,
-    });
-  }
+  const { id } = req.params;
   const {
     nome,
     iniciativa_privada,
-    endereco,
+    endereco: {
+      cep,
+      rua,
+      numero,
+      complemento,
+      referencia,
+      estado,
+      cidade,
+      bairro,
+    },
+    bairros_atuantes,
     site,
     atividades_disponiveis,
     pessoa_responsavel,
   } = req.body;
-
-  if (typeof nome != "string" || nome.trim() == "")
-    return response.status(400).send({
-      message: "O nome não pode ser vazio",
+  try {
+    if (id.length < 24 || id.length > 24) {
+      return res.status(404).json({
+        message: `Por favor digite o id da biblioteca com 24 caracteres.`,
+      });
+    }
+    const bibliotecaEncontrada = await BibliotecaSchema.updateOne({
+      nome,
+      iniciativa_privada,
+      endereco: {
+        cep,
+        rua,
+        numero,
+        complemento,
+        referencia,
+        estado,
+        cidade,
+        bairro,
+      },
+      bairros_atuantes,
+      site,
+      atividades_disponiveis,
+      pessoa_responsavel,
     });
-
-  if (typeof numero != "number" || numero < 0) {
-    return response.status(400).send("O numero é obrigatório");
+    const bibliotecaAtualizadaPorId = await BibliotecaSchema.find({ id });
+    if (bibliotecaAtualizadaPorId.length == 0) {
+      return res.status(404).json({
+        message: `A biblioteca não foi encontrada.`,
+      });
+    }
+    res.json({
+      message: "Biblioteca atualizada com sucesso",
+      bibliotecaAtualizadaPorId,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
   }
-
-  if (nome) biblioteca.nome = nome;
-  if (iniciativa_privada) biblioteca.iniciativa_privada = iniciativa_privada;
-  if (endereco) biblioteca.endereco = endereco;
-  if (atividades_disponiveis)
-    biblioteca.atividades_disponiveis = atividades_disponiveis;
-  if (site) biblioteca.site = site;
-  if (pessoa_responsavel) biblioteca.pessoa_responsavel = pessoa_responsavel;
-  res.status(200).send(biblioteca);
 };
 
 module.exports = {
