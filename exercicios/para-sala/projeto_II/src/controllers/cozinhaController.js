@@ -101,12 +101,12 @@ const atualizarCozinha = async (req,res)=>{
         mensagem: "O campo 'CNPJ' precisa ser um número"
       })
     }
-    const cozinhaTodas = await cozinhaSchema.find()
-    for (const contador in cozinhaTodas){
-      if (cozinhaTodas[contador].cnpj == cnpj) {
-        return res.status(400).json({mensagem: "CNPJ já cadastrado"})
-      }
-    }
+    // const cozinhaTodas = await cozinhaSchema.find()
+    // for (const contador in cozinhaTodas){
+    //   if (cozinhaTodas[contador].cnpj == cnpj) {
+    //     return res.status(400).json({mensagem: "CNPJ já cadastrado"})
+    //   }
+    // }
     if(typeof iniciativa_privada !="boolean"){
       return res.status(400).send({
         mensagem: "O campo 'Iniciativa Privada?' precisa ser True ou False"
@@ -180,17 +180,17 @@ const atualizarCozinha = async (req,res)=>{
     if (atividades_disponiveis[0]) cozinha.atividades_disponiveis[0] = atividades_disponiveis[0]
     if (pessoa_responsavel) cozinha.pessoa_responsavel = pessoa_responsavel
     
-    cozinhaNomeBairro = {
-      nome: nome,
-      endereco: endereco}
-    for (contador in cozinhaTodas){
-    const cadastroNomeBairro = {
-      nome: cozinhaTodas[contador].nome,
-      endereco: cozinhaTodas[contador].endereco
-    }
-    if (cadastroNomeBairro.nome == cozinhaNomeBairro.nome && cadastroNomeBairro.endereco.bairro == cozinhaNomeBairro.endereco.bairro){
-      return res.status(400).json({mensagem: "Erro: Cadastro com o mesmo nome no mesmo bairro encontrado"})
-    }}
+    // cozinhaNomeBairro = {
+    //   nome: nome,
+    //   endereco: endereco}
+    // for (contador in cozinhaTodas){
+    // const cadastroNomeBairro = {
+    //   nome: cozinhaTodas[contador].nome,
+    //   endereco: cozinhaTodas[contador].endereco
+    // }
+    // if (cadastroNomeBairro.nome == cozinhaNomeBairro.nome && cadastroNomeBairro.endereco.bairro == cozinhaNomeBairro.endereco.bairro){
+    //   return res.status(400).json({mensagem: "Erro: Cadastro com o mesmo nome no mesmo bairro encontrado"})
+    // }}
     const salvarCozinha = await cozinha.save()
     res.status(200).json({cozinha: salvarCozinha})
 }
