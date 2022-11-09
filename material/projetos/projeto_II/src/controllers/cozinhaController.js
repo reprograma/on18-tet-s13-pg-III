@@ -21,11 +21,21 @@ const buscarCozinhas = async(req,res)=>{
 }
 
 const buscarCozinhaPorId = async(req, res)=>{
-    
+    const {id} = req.params
+
+    try {
+        const cozinhaEncontrada = await CozinhaSchema.find(id)
+        if (cozinhaEncontrada == undefined){
+            return res.status(404).send({message: "Cozinha nao encontrada"})
+        }
+        res.status(200).send(cozinhaEncontrada)
+    } catch (error) {
+        res.status(500).send({message: error.message})
+    }
 }
 
 const cadastrarCozinha = async(req,res)=>{
-    const { nome, cnpj, iniciativa, endereco, bairros_que_atuam, site, atividades_disponiveis, pessoa_responsavel } = req.body
+    const { nome, cnpj, iniciativa, endereco, bairrosQueAtuam, site, atividadesDisponiveis, pessoaResponsavel } = req.body
 
     try {
         const cozinha = new CozinhaSchema({
@@ -33,10 +43,10 @@ const cadastrarCozinha = async(req,res)=>{
             cnpj: cnpj,
             iniciativa: iniciativa,
             endereco: endereco,
-            bairros_que_atuam: bairros_que_atuam,
+            bairrosQueAtuam: bairrosQueAtuam,
             site: site,
-            atividades_disponiveis: atividades_disponiveis,
-            pessoa_responsavel: pessoa_responsavel
+            atividadesDisponiveis: atividadesDisponiveis,
+            pessoaResponsavel: pessoaResponsavel
         })
 
         const adicionarCozinha = await cozinha.save()

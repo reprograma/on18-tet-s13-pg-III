@@ -48,7 +48,7 @@ endereco:{
         required: true 
     }
 },
-bairros_que_atuam:{
+bairrosQueAtuam:{
     type: Array,
     required: true
 },
@@ -56,11 +56,11 @@ site:{
     type: String,
     required: false
 },
-atividades_disponiveis: {
+atividadesDisponiveis: {
     type: Array,
     required: false
 },
-pessoa_responsavel: {
+pessoaResponsavel: {
     type: String,
     required: true
 }
