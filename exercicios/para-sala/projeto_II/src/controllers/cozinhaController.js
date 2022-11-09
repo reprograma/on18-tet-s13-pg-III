@@ -174,15 +174,14 @@ const atualizarCozinha = async (request, response) => {
 
     const { id } = request.params
 
-    const { nome, cnpj, iniciativa_privada,
+    //Regras de negócio: Não pode atualizar o CNPJ;
+    const { nome, iniciativa_privada,
         endereco: { cep, rua, numero, complemento, referencia, estado, cidade, bairro },
         bairros_atuantes, site, atividades_disponiveis, pessoa_responsavel } = request.body;
 
     //Regras de negócio: Respeitar o tipo de dado e preenchimento obrigatório;
     if (typeof (nome) !== 'string' || nome.trim() === "") {
         return response.status(400).send({ Alerta: `O nome deve ser uma string` })
-    } else if (typeof (cnpj) !== 'number') {
-        return response.status(400).send({ Alerta: `O CNPJ deve ser um número` })
     } else if (typeof (iniciativa_privada) !== 'boolean') {
         return response.status(400).send({ Alerta: `Responda com true ou false` })
     } else if (typeof (cep) !== 'string' || cep.trim() === "") {
@@ -207,30 +206,10 @@ const atualizarCozinha = async (request, response) => {
         return response.status(400).send({ Alerta: `A pessoa responsável pela cozinha deve ser uma string` })
     }
 
-    //Regras de negócio: Não poderá existir cozinhas com o mesmo nome no mesmo bairro;
-    const buscaBairro = await CozinhaSchema.find({ bairro })
-    let existeBairro = buscaBairro.filter((cozinha) => cozinha.endereco.bairro === bairro)
-    let nomeExisteBairro = existeBairro.find((cozinha) => cozinha.nome === nome)
-    if (nomeExisteBairro) {
-        return response.status(400).json({ message: `Não será possível atualizar o nome, pois esta cozinha já existe neste bairro` });
-    }
-
-    //Regras de negócio: Não poderá existir cozinhas com o mesmo cnpj;
-    const buscaCnpj = await CozinhaSchema.find({ cnpj })
-    if (buscaCnpj.length !== 0) {
-        return response.status(400).json({ message: `Não será possível atualizar o cnpj da cozinha, pois, esse número de cnpj já existe` });
-    }
-
-    //Regras de negócio: Não aceitará CNPJ com menos de 14 caracteres;
-    if (String(cnpj).length > 14) {
-        return response.status(401).json({ Alerta: `Este CNPJ é inválido. Caracter a mais: ${Number(String(cnpj).length) - 14}` });
-    } else if (String(cnpj).length < 14) {
-        return response.status(401).json({ Alerta: `Este CNPJ é inválido. Caracter a menos: ${14 - Number(String(cnpj).length)}` });
-    }
     try {
 
         const cozinhaEncontrada = await CozinhaSchema.updateOne({
-            nome, cnpj, iniciativa_privada,
+            nome, iniciativa_privada,
             endereco: { cep, rua, numero, complemento, referencia, estado, cidade, bairro },
             bairros_atuantes, site, atividades_disponiveis, pessoa_responsavel
         })
