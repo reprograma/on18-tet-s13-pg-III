@@ -1,25 +1,6 @@
-const mongoose = require("mongoose");
 const BibliotecaSchema = require("../models/BibliotecaSchema");
+//post
 const criarBiblioteca = async (req, res) => {
-  const {
-    nome,
-    cnpj,
-    telefone,
-    iniciativa_privada,
-    endereco,
-    cep,
-    rua,
-    numero,
-    complemento,
-    referencia,
-    estado,
-    cidade,
-    bairro,
-    bairros_atuantes,
-    site,
-    atividades_disponiveis,
-    pessoa_responsavel,
-  } = req.body;
   try {
     const biblioteca = new BibliotecaSchema({
       nome: req.body.nome,
@@ -27,15 +8,6 @@ const criarBiblioteca = async (req, res) => {
       telefone: req.body.telefone,
       iniciativa_privada: req.body.iniciativa_privada,
       endereco: req.body.endereco,
-      cep: req.body.cep,
-      rua: req.body.rua,
-      numero: req.body.numero,
-      complemento: req.body.complemento,
-      referencia: req.body.referencia,
-      estado: req.body.estado,
-      cidade: req.body.cidade,
-      bairro: req.body.bairro,
-      bairros_atuantes: req.body.bairros_atuantes,
       site: req.body.site,
       atividades_disponiveis: req.body.atividades_disponiveis,
       pessoa_responsavel: req.body.pessoa_responsavel,
@@ -50,13 +22,12 @@ const criarBiblioteca = async (req, res) => {
     });
   }
 };
-const buscarBiblioteca = async (req, res) => {
-  const { id } = req.query;
-  let query = {};
+//Get
+const buscarBibliotecaId = async (req, res) => {
+  const { id } = req.params;
 
-  if (id) query.id = new RegExp(id, "i");
   try {
-    const biblioteca = await BibliotecaSchema.find(query);
+    const biblioteca = await BibliotecaSchema.findById(req.params.id);
     res.status(200).json(biblioteca);
   } catch (error) {
     res.status(500).json({
@@ -64,28 +35,82 @@ const buscarBiblioteca = async (req, res) => {
     });
   }
 };
-const Biblioteca = async (req, res) => {
-  const { id } = req.params;
+//get
+const biblioteca = async (req, res) => {
   try {
-    const biblioteca = await db();
-    const bibliotecaEncontrada = biblioteca.find(
-      (biblioteca) => biblioteca.id == id
-    );
-    if (bibliotecaEncontrada == undefined) {
-      return res.status(404).send({
-        message: "Biblioteca não encontrada",
-      });
-    }
-    res.status(200).send(bibliotecaEncontrada);
+    const biblioteca = await BibliotecaSchema.find();
+    res.status(200).json(biblioteca);
   } catch (error) {
-    res.status(500).send({
-      message: error.message,
+    res.status(500).json({
+      mensagem: error.message,
     });
   }
 };
 
+//delete
+const deletarBiblioteca = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const biblioteca = await BibliotecaSchema.findById(id);
+    if (biblioteca == null) {
+      return res.status(404).json({
+        message: "biblioteca com este id ${id} não encontrada",
+      });
+    }
+    await biblioteca.remove();
+
+    res.status(200).json({
+      mensagem: `Biblioteca com este id ${id} removida do sistema.`,
+    });
+  } catch (error) {
+    res.status(400).json({
+      mensagem: error.message,
+    });
+  }
+};
+
+//patch
+const alterarBiblioteca = async (req, res) => {
+  const { id } = req.body;
+  const bibliotecas = await bibliotecas.BibliotecaSchema();
+  const biblioteca = bibliotecas.find((biblioteca) => biblioteca.id == id);
+  if (!biblioteca) {
+    return response.status(404).send({
+      message: `Biblioteca com o ${id} não encontrado!`,
+    });
+  }
+  const {
+    nome,
+    iniciativa_privada,
+    endereco,
+    site,
+    atividades_disponiveis,
+    pessoa_responsavel,
+  } = req.body;
+
+  if (typeof nome != "string" || nome.trim() == "")
+    return response.status(400).send({
+      message: "O nome não pode ser vazio",
+    });
+
+  if (typeof numero != "number" || numero < 0) {
+    return response.status(400).send("O numero é obrigatório");
+  }
+
+  if (nome) biblioteca.nome = nome;
+  if (iniciativa_privada) biblioteca.iniciativa_privada = iniciativa_privada;
+  if (endereco) biblioteca.endereco = endereco;
+  if (atividades_disponiveis)
+    biblioteca.atividades_disponiveis = atividades_disponiveis;
+  if (site) biblioteca.site = site;
+  if (pessoa_responsavel) biblioteca.pessoa_responsavel = pessoa_responsavel;
+  res.status(200).send(biblioteca);
+};
+
 module.exports = {
-  buscarBiblioteca,
+  buscarBibliotecaId,
   criarBiblioteca,
-  Biblioteca,
+  biblioteca,
+  deletarBiblioteca,
+  alterarBiblioteca,
 };
