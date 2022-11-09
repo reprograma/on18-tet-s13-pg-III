@@ -16,6 +16,12 @@ const cadastrarCozinha = async(req,res)=>{
                 atividades_disponiveis: atividades_disponiveis,
                 pessoa_responsavel: pessoa_responsavel
             })
+            const cozinhaTodas = await cozinhaSchema.find()
+            for (const contador in cozinhaTodas){
+              if (cozinhaTodas[contador].cnpj == cozinha.cnpj) {
+                return res.status(400).json({mensagem: "CNPJ já cadastrado"})
+              }
+            }
             const salvarCozinha = await cozinha.save()
             res.status(201).json({
                 cozinha: salvarCozinha
@@ -83,6 +89,12 @@ const atualizarCozinha = async (req,res)=>{
       return res.status(400).send({
         mensagem: "O campo 'CNPJ' precisa ser um número"
       })
+    }
+    const cozinhaTodas = await cozinhaSchema.find()
+    for (const contador in cozinhaTodas){
+      if (cozinhaTodas[contador].cnpj == cnpj) {
+        return res.status(400).json({mensagem: "CNPJ já cadastrado"})
+      }
     }
     if(typeof iniciativa_privada !="boolean"){
       return res.status(400).send({
