@@ -3,19 +3,21 @@ const mongoose = require("mongoose");
 const BibliotecaSchema = require("../models/BibliotecaSchema");
 
 const criarBiblioteca = async (req, res) => {
-    const {
-        nome,
-        cnpj,
-        telefone,
-        iniciativa_privada,
-        endereco,
-        bairros_atuantes, 
-        site, 
-        atividades_disponiveis, 
-        responsavel
-    } = req.body
-    
+            
     try {
+
+        const {
+            nome,
+            cnpj,
+            telefone,
+            iniciativa_privada,
+            endereco,
+            bairros_atuantes, 
+            site, 
+            atividades_disponiveis, 
+            responsavel
+        } = req.body
+    
         const biblioteca = new BibliotecaSchema({
             nome:nome,
             cnpj: cnpj,
@@ -27,17 +29,32 @@ const criarBiblioteca = async (req, res) => {
             atividades_disponiveis: atividades_disponiveis,
             responsavel: responsavel        
         })
-
-        const verificaCnpj = BibliotecaSchema.find({cnpj})
-        if (verificaCnpj.length !== 0){
-            return res.status(409).json({mensagem:"Esse CNPJ já existe em nossos registros"})
-        }
-        // const verificaEndereco = BibliotecaSchema.find()
         
+        const verificaCnpj = await BibliotecaSchema.find({cnpj})
+        
+        if (verificaCnpj.length !== 0){
+            return res.status(409).json({mensagem:"Esse CNPJ já existe em nossos registros."})
+        }else{
+            console.log("biblioteca cadastrada")
+        } 
+          
+        // const verificaEnderecoExistente = BibliotecaSchema.endereco.find(endereco => endereco.bairro === endereco.bairro)
+        //     if(verificaExisteEndereco){
+        //     const verificaNome = BibliotecaSchema.find(biblioteca => biblioteca.nome === nome)
+        //         if(verificaNome && verificaExisteEndereco){
+        //             return res.status(409).json({mensagem:"Já existe uma biblioteca com esse nome nesse bairro."}) 
+        //         } 
+        //     }
+
         const salvarBiblioteca = await biblioteca.save();
 
+        
+        
+        
+
         res.status(201).json({
-            biblioteca: salvarBiblioteca
+            biblioteca: salvarBiblioteca,
+            mensagem: "biblioteca cadastrada com sucesso"
         })
     } catch (error) {
         res.status(400).json({
