@@ -56,10 +56,13 @@ const deletarCozinha = async(req,res)=>{
     const { id } = req.params
 
     try {
-        const cozinha = await CozinhaSchema.find(params)
-        
+        const cozinhaEncontrada = await CozinhaSchema.deleteOne({ id })
+        if (cozinhaEncontrada.deletedCount === 1) {
+            return response.status(200).send({ message: `A cozinha foi deletada com sucesso!` })
+        } else {
+            return response.status(404).send({ message: "A cozinha não foi encontrada." })
 
-
+        }
     } catch (error) {
         res.status(500).send({message: error.message})
     }
