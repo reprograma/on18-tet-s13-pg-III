@@ -1,5 +1,6 @@
+//importa mongoose
 const mongoose = require('mongoose')
-
+//Cria a estrutura de dados do BD
 const cozinhaSchema = new mongoose.Schema({
     nome: {
         type: String,
@@ -64,5 +65,5 @@ const cozinhaSchema = new mongoose.Schema({
         required: true
     }
 })
-
+//Exporta para uso externo
 module.exports = mongoose.model('cozinha', cozinhaSchema)
