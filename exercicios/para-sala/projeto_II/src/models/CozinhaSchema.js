@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 const cozinhaSchema = new mongoose.Schema({
+    id: {
+        type: mongoose.Types.ObjectId,
+        default: mongoose.Types.ObjectId
+    },
     nome: {
         type: String,
         required: true
@@ -7,11 +11,7 @@ const cozinhaSchema = new mongoose.Schema({
     cnpj: {
         type: Number,
         required: true
-    },
-    telefone: {
-        type: String,
-        required: true
-    },
+    },    
     iniciativa_privada: {
         type: Boolean,
         required: false

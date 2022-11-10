@@ -4,12 +4,11 @@ const router = express.Router();
 const controller = require('../controllers/cozinhaController');
 
 
-router.get('/buscar', controller.buscarCozinha);
-rotas.get("/:id/cozinha", controller.obterCozinha);
-
-router.post('/criar', controller.criarCozinha);
-rotas.delete("/:id/deletar", controller.deletarCozinha);
-rotas.patch("/:id/atualizar", controller.atualizarCozinha);
+router.get("/", controller.buscarTodasCozinhas);
+router.get("/:id", controller.buscarCozinhaId);
+router.post("/", controller.criarCozinha);
+router.delete("/:id", controller.deletarCozinha);
+router.patch("/:id", controller.atualizarCozinha);
 
 
 module.exports = router;
