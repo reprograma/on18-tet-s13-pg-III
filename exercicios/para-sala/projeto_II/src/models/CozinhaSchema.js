@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const cozinhasSchema = new mongoose.Schema([{
+const cozinhaSchema = new mongoose.Schema({
     id: {
         type: mongoose.Types.ObjectId,
         default: mongoose.Types.ObjectId
@@ -13,11 +13,10 @@ const cozinhasSchema = new mongoose.Schema([{
         type: Number, 
         required: true
     },
-    "É uma iniciativa privada?": { // boolean (sim ou não)
-        type: String
+    iniciativa_privada: { // boolean (sim ou não)
+        type: Boolean
     },
     endereco: {
-        required: true,
         cep: Number,
         rua: String,
         numero: Number,
@@ -27,18 +26,19 @@ const cozinhasSchema = new mongoose.Schema([{
         cidade: String,
         bairro: String
     },
-    "Bairros que atuam" : [{
+    bairros_que_atuam : [{
         type: String
     }],
     site: {
         type: String, 
         required: false
     },
-    "atividades disponiveis": [{
+    atividades_disponiveis: [{
         type: String
     }],
-    "Pessoa responsável pela cozinha": {
-        type: String, 
-        required: true
+    pessoa_responsavel_pela_cozinha: {
+        type: String
     }
-}])
+})
+
+module.exports = mongoose.model("cozinha", cozinhaSchema)

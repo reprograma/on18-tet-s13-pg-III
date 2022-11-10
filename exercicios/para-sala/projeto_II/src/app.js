@@ -9,8 +9,7 @@ const rotasCozinha = require('./routes/RoutesSchema');
 
 app.use(cors());
 app.use(express.json())
-
-// app.use("/cozinhas", rotasCozinha);
+app.use("/cozinhas", rotasCozinha)
 
 database.connect();
 
