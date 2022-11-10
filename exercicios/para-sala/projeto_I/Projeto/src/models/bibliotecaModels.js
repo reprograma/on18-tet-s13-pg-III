@@ -6,16 +6,18 @@ const bibliotecaSchema = new mongoose.Schema({
   id: {
     type: mongoose.Types.ObjectId,
     default: mongoose.Types.ObjectId,
-    required: true
+   
   },
 
   nome: {
     type: String,
     
+    
   },
 
   cnpj: {
     type: String,
+    
     
   },
 
@@ -37,6 +39,7 @@ const bibliotecaSchema = new mongoose.Schema({
         estado: String,
         cidade: String,
         bairro: String,
+        
   },
 
 
@@ -45,7 +48,8 @@ const bibliotecaSchema = new mongoose.Schema({
   },
 
   site: {
-    type: Array
+    type: Array,
+    
   },
   
   atividades_disponiveis: {
@@ -54,7 +58,8 @@ const bibliotecaSchema = new mongoose.Schema({
 
 
   pessoa_responsavel: {
-    type: String,
+    type: String
+   
     
   }
 
