@@ -70,7 +70,7 @@ const deletarBibliotecaPorId = async(req, res)=>{
         }
        
         await bibliotecaEncontrada.delete()
-        res.status(200).json({mensagem: `Paciente removida do sistema.`})
+        res.status(200).json({mensagem: `biblioteca removida do sistema.`})
                      
     } catch (error) {
         res.status(400).json({message:"erro"})        
@@ -80,13 +80,29 @@ const deletarBibliotecaPorId = async(req, res)=>{
 
 const atualizarBiblioteca = async(req, res)=>{
     try {
+        const {nome, telefone, cnpj, isIniciativaPrivada, 
+            endereco, bairros, site, 
+            atividades_disponiveis, pessoa_responsavel
+        } = req.body 
+
+
         let bibliotecas = await bibliotecaSchema.findById(req.params.id)
-        let novoNome = req.body.nome
-        let bibliotecaEncontrada = bibliotecas.findById(biblioteca =>biblioteca.id == id)
-        bibliotecaEncontrada.nome = novoNome
-        res.status(200).json({
-            "mensagem": "Nome atualizado com sucesso"
-        })
+
+        bibliotecas.nome = nome || bibliotecas.nome
+        bibliotecas,telefone = telefone || bibliotecas.telefone
+        bibliotecas.cnpj = cnpj || bibliotecas.cnpj
+        bibliotecas.isIniciativaPrivada = isIniciativaPrivada || bibliotecas.isIniciativaPrivada
+        bibliotecas.endereco = endereco || bibliotecas.endereco
+        bibliotecas.bairros = bairros || bibliotecas.bairros
+        bibliotecas.site = site || bibliotecas.site
+        bibliotecas.atividades_disponiveis = atividades_disponiveis || bibliotecas.atividades_disponiveis
+        bibliotecas.pessoa_responsavel = pessoa_responsavel || bibliotecas.pessoa_responsavel
+
+        const bibliotecaAtualizada = bibliotecas.save()
+
+        
+        res.status(200).json(bibliotecaAtualizada)
+                    
 
     } catch (error) {
         res.status(400).json({message:"erro"}) 
