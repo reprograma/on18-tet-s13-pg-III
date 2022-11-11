@@ -54,7 +54,17 @@ const buscarBiblioteca = async(req,res) =>{
 } 
 
 //GET "/xxxx/[id] Deverá retornar o valor com o id informado
-
+const buscarBibliotecaPorId = async(req,res) =>{
+    try {
+        const biblioteca = await bibliotecaSchema.findById(req.params.id)
+        res.status(200).json(biblioteca)
+    } catch (error) {
+        res.status(500).json({
+            message : error.message
+        })
+        
+    }
+}
 
 // DELETE "/biblioteca/[ID]" Deverá deletar uma biblioteca por id específico e retorna mensagem;
 const deletarBiblioteca = async(req, res) => {
@@ -81,6 +91,7 @@ const deletarBiblioteca = async(req, res) => {
 module.exports = {
     criarBiblioteca,
     buscarBiblioteca,
-    deletarBiblioteca
+    deletarBiblioteca,
+    buscarBibliotecaPorId
 }
     
