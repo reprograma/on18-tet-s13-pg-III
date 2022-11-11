@@ -46,28 +46,78 @@ const buscarBibliotecas = async(require, response) => {
     }
 }
 
-const buscarBibliotecasPorID = async(require, response) => {
-    const { _id } = require.params
-
+const buscarBibliotecaPorId = async(req, res) => {
     try {
-    const bibliotecas = await bibliotecaSchema.find(params)
+        const biblioteca = await bibliotecaSchema.findById(req.params.id)
+        res.status(200).json(biblioteca);
 
-     const bibliotecaEncontrada = bibliotecas.find(bibliotecaAtual => {
-        return bibliotecaAtual.id == id
-    })
-    
-        response.status(200).send(bibliotecaEncontrada)
-    } catch (error) {
-        
+    } catch (error)  {
+        res.status(500).json({
+            mensagem: error.message
+        })
     }
+}
 
+const atualizarBiblioteca = async (request, response) => {
+    const { id } = request.params
+   
+    const {nome, cnpj, telefone, iniciativa_privada, endereco:{cep, rua, numero, complemento, referencia, estado, cidade, bairro },
+    bairros_atuantes,site,atividades_disponiveis, responsavel} = request.body;
+    
+    try{
+        if(id.length > 24 || id.length > 24) {
+            response.status(404).json({
+                message:`Número de ID incorreto, por favor, digite novamente!`
+            })
+        }
+
+        if (String(cnpj).length > 14 || String(cnpj).length < 14){
+            response.status(404).json({
+                message:`cnpj inválido, digite novamente.`
+            })
+        }
+
+        const bibliotecaEncontrada = await bibliotecaSchema.updateOne({ 
+            nome, cnpj,telefone, iniciativa_privada, 
+            endereco: {cep, rua,numero, complemento, referencia, estado, cidade, bairro},
+            bairros_atuantes, site, atividades_disponiveis, responsavel
+        })
+        const bibliotecaAtualizado = await bibliotecaSchema.find({ id })
+            if(bibliotecaAtualizado.length == 0 ) {
+                response.status(404).json({
+                    message:`Biblioteca não encontrada!`
+                })
+            }
+     
+        response.status(200).json(bibliotecaAtualizado)
+
+   } catch (error){
+        response.status(400).json({
+            message: error.message
+      })
+   }
 }
 
 
+const deletarBiblioteca = async (req, res) => {
+
+    try {
+        const bibliotecas = await bibliotecaSchema.findById(req.params.id)
+
+        await bibliotecas.delete()
+
+        res.status(200).send({ message: "Biblioteca deletada com sucesso!"})
+
+    } catch (error) {
+        res.status(500).send({ message: error })
+    }
+}
 
 
 module.exports = {
     criarBiblioteca,
     buscarBibliotecas,
-    buscarBibliotecasPorID
+    buscarBibliotecaPorId,
+    atualizarBiblioteca,
+    deletarBiblioteca
 }
