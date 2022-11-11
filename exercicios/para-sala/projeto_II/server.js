@@ -4,7 +4,7 @@ const app = require('./src/app');
 
 const PORT = process.env.PORT;
 
-app.get('/', function(req, res) {
+app.get('/', function(request, response) {
     res.send({
         message: 'primeiro get'
     })
