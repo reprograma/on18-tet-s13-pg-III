@@ -9,6 +9,7 @@ const rotasdaCozinha = require ("./routes/cozinhaRoutes")
 
 app.use(cors())
 app.use(express.json())
+app.use("/cozinha", rotasdaCozinha)
 
 database.connect()
 

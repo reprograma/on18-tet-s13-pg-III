@@ -1,13 +1,13 @@
-const mogoose = require ("mongoose")
+const mongoose = require ("mongoose")
 const uri = process.env.MONGODB_URI
 
 const connect = async () =>{
     try{
         await mongoose.connect (uri,{
-            useNewUrlParse: true,
-            useUnifiedTopology:  true
+            useNewUrlParser: true,
+            useUnifiedTopology: true
         })
-        console.log(error.message)
+        console.log(error.message, "esta errado aqui")
     }catch(error){
         console.log(error.message)
     }

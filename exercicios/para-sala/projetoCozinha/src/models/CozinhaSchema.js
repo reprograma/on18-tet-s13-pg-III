@@ -1,5 +1,6 @@
 const mongoose = require ("mongoose")
 
+//Colocar noREADME
 // _id: autogerado e obrigatório;
 // nome: texto e obrigatório;
 // cnpj: numero e obrigatorio;
@@ -19,9 +20,10 @@ const mongoose = require ("mongoose")
 // Pessoa responsável pela cozinha: string e obrigatório;
 
 const cozinhaSchema = new mongoose.Schema({
-    // _id: {
-    //     type: 
-    // }
+    _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        default: mongoose.Types.ObjectId
+       },    
     nome: { 
         type: String,
         required: true
@@ -71,7 +73,7 @@ const cozinhaSchema = new mongoose.Schema({
     type:String,
     required:true
    }},
-   bairros_que_atuam:{
+   bairrosqueAtuam:{
         type: Array,
         required: true
     },
@@ -79,15 +81,15 @@ const cozinhaSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    atividades_disponiveis: {
+    atividadesDisponiveis: {
         type: Array,
         required: false
     },
-    pessoa_responsavel: {
+    pessoaResponsavel: {
         type: String,
         required: true
     }
 
 })
 
-module.exports = mongoose.model(cozinhaSchema)
+module.exports = mongoose.model("cozinha Schema", cozinhaSchema)
