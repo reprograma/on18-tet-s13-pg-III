@@ -63,23 +63,23 @@ const cadastrarCozinha = async(req,res)=>{
 }
 
 const deletarCozinha = async(req,res)=>{
-    const { id } = req.params
-
     try {
-        const cozinhaEncontrada = await CozinhaSchema.deleteOne({ id })
-        if (cozinhaEncontrada.deletedCount === 1) {
-            return response.status(200).send({ message: `A cozinha foi deletada com sucesso!` })
-        } else {
-            return response.status(404).send({ message: "A cozinha não foi encontrada." })
-
-        }
-    } catch (error) {
+        const cozinha = await CozinhaSchema.findById(re.params.id)
+        
+        await cozinha.delete()
+        
+        res.status(200).send({ message: `A cozinha foi deletada com sucesso!` })
+    }catch (error) {
         res.status(500).send({message: error.message})
     }
 }
 
 const alterarCozinha = async(req, res)=>{
-
+    try {
+        const procurarCozinha = await CozinhaSchema.findById(req.params.id)
+    } catch (error) {
+        
+    }
 }
 
 module.exports = {
