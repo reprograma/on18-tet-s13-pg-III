@@ -7,7 +7,7 @@ router.post('/biblioteca',controller.criarBiblioteca)
 router.get('/biblioteca', controller.buscarBiblioteca)
 router.delete('/biblioteca/:id',controller.deletarBiblioteca)
 router.get('/biblioteca/:id',controller.buscarBibliotecaPorId)
-
+router.patch('/biblioteca/:id',controller.atualizarBiblioteca)
 
 
 

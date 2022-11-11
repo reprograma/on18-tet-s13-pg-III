@@ -11,12 +11,13 @@ const bibliotecaSchema = new mongoose.Schema({
 
   nome: {
     type: String,
-    
+    required : true
     
   },
 
   cnpj: {
     type: String,
+    required : true
     
     
   },
@@ -49,7 +50,7 @@ const bibliotecaSchema = new mongoose.Schema({
 
   site: {
     type: Array,
-    
+    required : false
   },
   
   atividades_disponiveis: {
@@ -58,7 +59,8 @@ const bibliotecaSchema = new mongoose.Schema({
 
 
   pessoa_responsavel: {
-    type: String
+    type: String,
+    required : true
    
     
   }

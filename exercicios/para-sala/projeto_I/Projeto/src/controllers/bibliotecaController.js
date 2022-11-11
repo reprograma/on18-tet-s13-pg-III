@@ -86,12 +86,52 @@ const deletarBiblioteca = async(req, res) => {
         })
     }
 }
+//PATCH "/biblioteca/[ID]" Deverá alterar informação específica por id específico e retorna o cadastro atualizado;
+const atualizarBiblioteca = async (req,res) => {
+    
+    try {
+    
+    const {id} = req.params
+    const {nome,cnpj,telefone,iniciativa_privada,endereco,bairros_atuantes,site,atividades_disponiveis,pessoa_responsavel} = req.body
+    const procurarBiblioteca = await bibliotecaSchema.findById(id)
+
+    procurarBiblioteca.nome = nome || procurarBiblioteca.nome
+    procurarBiblioteca.cnpj = cnpj || procurarBiblioteca.cnpj
+    procurarBiblioteca.telefone = telefone || procurarBiblioteca.telefone
+    procurarBiblioteca.iniciativa_privada = iniciativa_privada || procurarBiblioteca.iniciativa_privada
+    procurarBiblioteca.cnpj = endereco || procurarBiblioteca.endereco
+    procurarBiblioteca.bairros_atuantes = bairros_atuantes || procurarBiblioteca.bairros_atuantes
+    procurarBiblioteca.site = site || procurarBiblioteca.site
+    procurarBiblioteca.atividades_disponiveis = atividades_disponiveis || procurarBiblioteca.atividades_disponiveis
+    procurarBiblioteca.pessoa_responsavel = pessoa_responsavel || procurarBiblioteca.pessoa_responsavel
+     
+    const bibliotecaAtualizada = procurarBiblioteca.save()
+    res.status(200).json({
+        message :  `Biblioteca Atualizada`,
+    
+        bibliotecaAtualizada})
+
+
+    } catch (error) {
+     
+        res.status(400).json({
+            message : error.message
+        })
+        
+    }
+}
+
+
+
+
+
 
 
 module.exports = {
     criarBiblioteca,
     buscarBiblioteca,
     deletarBiblioteca,
-    buscarBibliotecaPorId
+    buscarBibliotecaPorId,
+    atualizarBiblioteca
 }
     
