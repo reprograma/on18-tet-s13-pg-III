@@ -3,7 +3,14 @@ const router = express.Router();
 
 const controller = require("../controllers/cozinhaController");
 
-router.post("/cozinha", controller.criarCozinha)
+router.get("/buscar", controller.buscarCozinha);
+router.get("/buscar/:id", controller.buscarCozinhaPorId);
+
+router.post("/cadastrar", controller.cadastrarCozinha);
+
+router.delete("/deletar/:id", controller.deletarCozinha);
+
+router.patch("/atualizar/:id", controller.atualizarCozinha);
 
 module.exports = router;
 

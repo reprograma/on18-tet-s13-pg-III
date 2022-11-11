@@ -10,7 +10,7 @@ const cozinhaRoutes = require("./routes/cozinhaRoutes");
 app.use(cors());
 app.use(express.json());
 
-app.use("/", cozinhaRoutes);
+app.use("/cozinha", cozinhaRoutes);
 
 database.connect();
 
