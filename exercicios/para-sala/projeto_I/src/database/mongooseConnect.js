@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 const uri = process.env.MONGODB_URI
 
 //função de conexão com o MongoDB
@@ -17,4 +17,4 @@ const connect = async () => {
 
 module.exports = {
     connect
-}
+} 
