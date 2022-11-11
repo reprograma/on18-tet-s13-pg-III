@@ -3,12 +3,12 @@ const router = express.Router()
 
 const controller = require('../controllers/bibliotecaController')
 
-router.get('/biblioteca', controller.buscarBibliotecas)
 
-
-
-
-
+router.get('/buscar', controller.buscarBibliotecas)
+router.get('/:id', controller.buscarBibliotecaId)
+router.post('/criar', controller.criarBibliotecas)
+router.delete('/:id', controller.deletarBiblioteca)                                        
+router.patch('/:id', controller.atualizarBiblioteca) 
 
 
 module.exports = router
