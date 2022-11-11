@@ -1,12 +1,26 @@
 const mongoose = require ("mongoose");
-const {response} = require("../app")
+const Schema = require("../models/schema");
 
-const restauranteSchema = require("../models/schema")
-
-const showRestaurantes = async(req,res)=>{
+const cadastrarRestaurante = async(req,res)=>{
+    const {nome, cnpj, iniciativaPrivada, endereco, bairros_atuando, site, atividades, responsavel} = req.body
+    console.log(req.body)
     try{
-        res.status(200).json({
-            teste: "testando"
+        const cozinha = new Schema({
+            nome: nome,
+            cnpj: cnpj,
+            iniciativaPrivada: iniciativaPrivada,
+            //endereco: endereco,
+            bairros_atuando: bairros_atuando,
+            site: site,
+            atividades: atividades,
+            responsavel: responsavel
+        })
+
+        const salvarRestaurante = await cozinha.save();
+
+        res.status(201).json({
+            mensagem: "restaurante criado",
+            "Dados do restaurante": salvarRestaurante
         })
     }catch(error){
         res.status(500).json({
@@ -15,8 +29,16 @@ const showRestaurantes = async(req,res)=>{
     }
 }
 
-const cadastrarRestaurante = async(req,res)=>{
+const showRestaurantes = async(req,res)=>{
+    const {id} = req.query;
+
+    let query = {};
+
+    if (id) query.id = new RegExp(id,"i");
+
     try{
+        const restaurantes = await restauranteSchema.find(query);
+        res.status(200).json(restaurantes)
 
     }catch(error){
         res.status(500).json({

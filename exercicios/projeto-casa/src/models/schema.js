@@ -1,6 +1,10 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const cozinha = new mongoose.Schema({
+    id: {
+        type: mongoose.Types.ObjectId,
+        default: mongoose.Types.ObjectId
+    },
     nome: {
         type: String,
         required: true
@@ -13,7 +17,7 @@ const cozinha = new mongoose.Schema({
         type: Boolean,
         required:false
     },
-    endereco:{
+    /*endereco:{
         cep:{
             type: Number,
             required: true
@@ -46,7 +50,7 @@ const cozinha = new mongoose.Schema({
             type: String,
             required: true
         }
-    },
+    },*/
     bairros_atuando:{
         type: Array,
         required: true
@@ -63,6 +67,6 @@ const cozinha = new mongoose.Schema({
         type: String,
         required: true
     }
-    })
+    }, { timestamps : true })
 
 module.exports = mongoose.model("cozinha",cozinha)
