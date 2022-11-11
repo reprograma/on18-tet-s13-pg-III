@@ -82,14 +82,14 @@ const atualizarBiblioteca = async (request, response) => {
             endereco: {cep, rua,numero, complemento, referencia, estado, cidade, bairro},
             bairros_atuantes, site, atividades_disponiveis, responsavel
         })
-        const bibliotecaAtualizado = await bibliotecaSchema.find({ id })
-            if(bibliotecaAtualizado.length == 0 ) {
+        const bibliotecaAtualizada = await bibliotecaSchema.find({ id })
+            if(bibliotecaAtualizada.length == 0 ) {
                 response.status(404).json({
                     message:`Biblioteca não encontrada!`
                 })
             }
      
-        response.status(200).json(bibliotecaAtualizado)
+        response.status(200).json(bibliotecaAtualizada)
 
    } catch (error){
         response.status(400).json({
