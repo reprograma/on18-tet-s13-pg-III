@@ -7,11 +7,11 @@ const buscarTodasCozinhas = async (request, response) => {
         const cozinha = await CozinhaSchema.find()
 
         if (cozinha.length > 1) {
-            return response.status(200).json({ message: `Encontramos ${cozinha.length} cozinhas.`, cozinha })
+            return response.status(200).json({ Prezades: `Encontramos ${cozinha.length} cozinhas.`, cozinha })
         } else if (cozinha.length == 1) {
-            return response.status(200).json({ message: `Encontramos ${cozinha.length} cozinha.`, cozinha })
+            return response.status(200).json({ Prezades: `Encontramos ${cozinha.length} cozinha.`, cozinha })
         } else {
-            return response.status(404).json({ message: `Não encontramos nenhuma cozinha até o momento.` })
+            return response.status(404).json({ Prezades: `Nenhuma cozinha foi encontrada.` })
         }
 
     } catch (error) {
@@ -29,17 +29,17 @@ const buscarCozinhaId = async (request, response) => {
         //Regras de negócio: Não aceitará id com menos de 24 caracteres
         if (id.length > 24) {
             return response.status(401).json({
-                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. Caracter a mais: ${id.length - 24}.`
+                Alerta: `Id incorreto. Caracter a mais: ${id.length - 24}.`
             })
         } else if (id.length < 24) {
             return response.status(401).json({
-                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. Caracter a menos: ${24 - id.length}.`
+                Alerta: `Id incorreto. Caracter a menos: ${24 - id.length}.`
             })
         }
 
         const cozinha = await CozinhaSchema.find({ id })
         if (cozinha.length == 0) {
-            return response.status(404).json({ message: `A cozinha não foi encontrada.` })
+            return response.status(404).json({ Prezades: `A cozinha não foi encontrada.` })
         }
         response.status(200).json({ Prezades: `Segue a cozinha para este id [${id}]:`, cozinha })
 
@@ -90,13 +90,13 @@ const criarCozinha = async (request, response) => {
     let existeBairro = buscaBairro.filter((cozinha) => cozinha.endereco.bairro === bairro)
     let nomeExisteBairro = existeBairro.find((cozinha) => cozinha.nome === nome)
     if (nomeExisteBairro) {
-        return response.status(400).json({ message: `Não é possível cadastrar esta cozinha, esse nome já existe neste bairro` });
+        return response.status(400).json({ Prezades: `O nome desta cozinha já existe neste bairro` });
     }
 
     //Regras de negócio: Não poderá existir cozinhas com o mesmo cnpj;
     const buscaCnpj = await CozinhaSchema.find({ cnpj })
     if (buscaCnpj.length !== 0) {
-        return response.status(400).json({ message: `Não é possível cadastrar, pois, esse número de cnpj já existe` });
+        return response.status(400).json({ Prezades: `Este número de CNPJ já existe no nosso banco de dados` });
     }
 
     //Regras de negócio: Não aceitará CNPJ com menos de 14 caracteres;
@@ -148,19 +148,19 @@ const deletarCozinha = async (request, response) => {
         //Regras de negócio: Não aceitará id com menos de 24 caracteres
         if (id.length > 24) {
             return response.status(401).json({
-                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. Caracter a mais: ${id.length - 24}.`
+                Alerta: `Id incorreto. Caracter a mais: ${id.length - 24}.`
             })
         } else if (id.length < 24) {
             return response.status(401).json({
-                Alerta: `Por favor digite o id da cozinha corretamente, o mesmo possui 24 caracteres. Caracter a menos: ${24 - id.length}.`
+                Alerta: `Id incorreto. Caracter a menos: ${24 - id.length}.`
             })
         }
 
         const cozinhaEncontrada = await CozinhaSchema.deleteOne({ id })
         if (cozinhaEncontrada.deletedCount === 1) {
-            return response.status(200).send({ message: `A cozinha foi deletada com sucesso!` })
+            return response.status(200).send({ Prezades: `A cozinha foi deletada com sucesso!` })
         } else {
-            return response.status(404).send({ message: "A cozinha não foi encontrada." })
+            return response.status(404).send({ Prezades: "A cozinha não foi encontrada." })
         }
 
     } catch (error) {
@@ -174,12 +174,24 @@ const atualizarCozinha = async (request, response) => {
 
     const { id } = request.params
 
+    //Regras de negócio: Não aceitará id com menos de 24 caracteres
+    if (id.length > 24) {
+        return response.status(401).json({
+            Alerta: `Id incorreto. Caracter a mais: ${id.length - 24}.`
+        })
+    } else if (id.length < 24) {
+        return response.status(401).json({
+            Alerta: `Id incorreto. Caracter a menos: ${24 - id.length}.`
+        })
+    }
+
     //Regras de negócio: Não pode atualizar o CNPJ;
     const { nome, iniciativa_privada,
         endereco: { cep, rua, numero, complemento, referencia, estado, cidade, bairro },
         bairros_atuantes, site, atividades_disponiveis, pessoa_responsavel } = request.body;
 
     //Regras de negócio: Respeitar o tipo de dado e preenchimento obrigatório;
+
     if (typeof (nome) !== 'string' || nome.trim() === "") {
         return response.status(400).send({ Alerta: `O nome deve ser uma string` })
     } else if (typeof (iniciativa_privada) !== 'boolean') {
@@ -214,13 +226,13 @@ const atualizarCozinha = async (request, response) => {
             bairros_atuantes, site, atividades_disponiveis, pessoa_responsavel
         })
 
-        const cozinhaAtualizada = await CozinhaSchema.find({ id })
-        if (cozinhaAtualizada.length == 0) {
+        const cozinhaAtualizadaId = await CozinhaSchema.find({ id })
+        if (cozinhaAtualizadaId.length == 0) {
             return response.status(404).json({
-                message: `A cozinha não foi encontrada.`
+                Prezades: `A cozinha não foi encontrada.`
             })
         }
-        response.json({ cozinhaAtualizada })
+        response.status(200).json({ Prezades: `Confira o seu cadastro atualizado:`, cozinhaAtualizadaId })
 
     } catch (error) {
         response.status(500).json({
