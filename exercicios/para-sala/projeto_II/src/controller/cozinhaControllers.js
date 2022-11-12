@@ -28,25 +28,23 @@ const cozinhaPorId = async (req, res) => {
 }
 
 const cadastrarCozinha = async (req, res) => {
-    // const { nome, cnpj, endereco, site, iniciativa_privada, bairros_que_atuam, atividades_disponiveis, pessoa_responsavel_pela_cozinha } = req.body
     try{
-        const cozinha = new CozinhaSchema({
-            nome: req.body.nome,
-            cnpj: req.body.cnpj,
-            endereco: req.body.endereco,
-            site: req.body.site,
-            iniciativa_privada: req.body.iniciativa_privada,
-            bairros_que_atuam: req.body.bairros_que_atuam,
-            atividades_disponiveis: req.body.atividades_disponiveis,
-            pessoa_responsavel_pela_cozinha: req.body.pessoa_responsavel_pela_cozinha
-        })
+        const { nome, cnpj, endereco, site, iniciativa_privada, bairros_que_atuam, atividades_disponiveis, pessoa_responsavel_pela_cozinha } = req.body;
 
+        const buscarCnpj = await CozinhaSchema.find({ cnpj });
+
+        if(buscarCnpj.length !== 0){
+            return res.status(400).json({
+                message: "CNPJ já existe"
+            })
+        }
+        
         const salvarCozinha = await cozinha.save();
         res.status(201).json({
             cozinha: salvarCozinha
         })
         
-    }catch(error){
+    } catch(error){
         res.status(400).json({
             message: error.message
         })
@@ -74,19 +72,17 @@ const atualizarCadastroPorId = async (req, res) => {
 
 const deletarCadastro = async (req, res) => {
     try{
-        const cozinha = await CozinhaSchema.findById(req.params.query)
+        const { id } = req.params
+        const deletarPorId = await CozinhaSchema.deleteOne({ id })
         
-        await cozinha.delete()
-
         res.status(200).json({
             message: "Cozinha deletada com sucesso!"
         })
-    }catch(error){
-        res.status(400).json({
-            message: error.message
-        })
+    } catch(error){
+        res.status(404).send({ message: "Cozinha não encontrada" })
+        }
     }
-}
+   
 
 module.exports = {
     todasAsCozinhas,

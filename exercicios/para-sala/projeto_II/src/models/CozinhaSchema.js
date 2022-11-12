@@ -11,33 +11,46 @@ const cozinhaSchema = new mongoose.Schema({
     },
     cnpj: {
         type: Number, 
-        required: true
+        required: true,
+        unique: true
     },
     iniciativa_privada: { // boolean (sim ou não)
         type: Boolean
     },
     endereco: {
-        cep: Number,
-        rua: String,
-        numero: Number,
-        complemento: String,
-        referencia: String,
-        estado: String,
-        cidade: String,
-        bairro: String
+        cep: {
+            type: String,
+            require: true
+        },
+        rua: {
+            type: String,
+            require: true
+        },
+        numero: {
+            type: Number},
+        complemento: {
+            type: String},
+        referencia: {
+            type: String},
+        estado: {
+            type: String},
+        cidade: {
+            type: String},
+        bairro: {
+            type: String}
     },
     bairros_que_atuam : [{
-        type: String
+        type: String,
+        require: true
     }],
+    
     site: {
-        type: String, 
-        required: false
+        type: String
     },
-    atividades_disponiveis: [{
-        type: String
-    }],
-    pessoa_responsavel_pela_cozinha: {
-        type: String
+    atividades_disponiveis: [ ],
+    pessoa_responsavel: {
+        type: String,
+        require: true
     }
 })
 
