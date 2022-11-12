@@ -1,5 +1,6 @@
+require('dotenv').config();
 const express= require("express");
-const porta=8559;
+const porta=process.env.PORT
 
 
 let app=express();

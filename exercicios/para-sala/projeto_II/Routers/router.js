@@ -1,10 +1,13 @@
-const express=require('express')
 
-const Router=express.Router()
-const app=express();
+const express=require('express');
+const router=express.Router()
+const controler=require('../Controll/control')
 
 
-app.get('/cozinha', Router)
+
+
+router.get('/cozinha', controler.cozinhasCadastradas)
+
 
 
 module.exports=app;
