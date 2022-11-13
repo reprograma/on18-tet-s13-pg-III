@@ -49,7 +49,7 @@ Requisitos
 
  GET "/cozinha/[id] Deverá retornar a cozinha com o id informado.
 
- POST "/cozinha" Deverá criar uma "cozinha"
+ [x] POST "/cozinha" Deverá criar uma "cozinha"
 
  DELETE "/cozinha/[ID]" Deverá deletar uma cozinha por id específico e retorna mensagem;
 
