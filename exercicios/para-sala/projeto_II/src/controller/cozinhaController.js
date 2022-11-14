@@ -6,9 +6,11 @@ const criarCozinha = async (request, response) => {
 
     try {
 
+        const cozinhas = await CozinhaSchema.find(request.params)
+
         const { nome, cnpj, iniciativa_privada, endereco, estado, cidade, bairro, bairros_que_atuam, site, atividades_disponiveis, pessoa_responsavel } = request.body
 
-        const cozinha = new CozinhaSchema({
+        const cozinhaNova = new CozinhaSchema({
             nome: nome,
             cnpj: cnpj,
             iniciativa_privada: iniciativa_privada,
@@ -22,7 +24,20 @@ const criarCozinha = async (request, response) => {
             pessoa_responsavel: pessoa_responsavel
         })
 
-        const salvarCozinha = await cozinha.save()
+        for(const cozinha of cozinhas) {
+            if(cozinha.nome === cozinhaNova.nome && cozinha.bairro === cozinhaNova.bairro) 
+            return response.status(409).json({
+                message: "Já existe uma cozinha com este nome neste bairro"})
+        }
+
+        for(const cozinha of cozinhas) {
+            if(cozinha.cnpj === cozinhaNova.cnpj) 
+            return response.status(409).json({
+                message: "Já existe uma cozinha com este CNPJ"
+            })
+        }
+
+        const salvarCozinha = cozinhaNova.save()
 
 
         response.status(201).send(salvarCozinha)
@@ -56,7 +71,66 @@ const buscarCozinha = async (request, response) => {
 
 }
 
+const encontrarCozinha = async(request, response) => {
+
+    try {
+        
+        const cozinha = await CozinhaSchema.findById(request.params.id)
+
+        response.status(200).send(cozinha)
+        
+    } catch (error) {
+        response.status(500).json({
+            message: error.message
+        })
+    }
+
+    
+}
+
+
+// const atualizarCozinha = async(request, response) => {
+
+//     try {
+
+//         const acharCozinha = await CozinhaSchema.findById(request.params.id)
+
+//         const bodyRequest = request.body
+
+//         const salvarCozinha = bodyRequest.save()
+        
+//         response.status(200).json({
+//             message: "Cozinha atualizada com sucesso"
+//         })
+//     } catch (error) {
+//         response.status(500).json({
+//             message: error.message
+//         })
+//     }
+   
+// }
+
+
+const deletarCozinha = async (request, response) => {
+    try {
+        const cozinha = await CozinhaSchema.findById(request.params.id)
+
+        cozinha.delete()
+
+        response.status(200).json({
+            message: "Cozinha deletada com sucesso"
+        })
+
+    } catch (error) {
+        response.status(500).json({
+            message: error.message
+        })
+    }
+}
+
 module.exports = {
     criarCozinha,
-    buscarCozinha
+    buscarCozinha,
+    encontrarCozinha,
+    deletarCozinha
 }
