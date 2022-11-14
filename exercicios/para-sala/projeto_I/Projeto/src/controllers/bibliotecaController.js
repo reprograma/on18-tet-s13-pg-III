@@ -3,19 +3,36 @@ const bibliotecaSchema = require("../models/bibliotecaModels")
 
 const criarBiblioteca = async (req, res) => {
     
+    //Regra de Negócio : Não pode repetir bairro nem CNPJ.
+    const {nome,cnpj,telefone,iniciativa_privada,
+        endereco,bairros_atuantes,site,atividades_disponiveis,pessoa_responsavel} = req.body
+
+   // const{bairro,cnpj}=req.body
+    const buscaBairro = await bibliotecaSchema.find({ nome }) 
+    const buscaCnpj = await bibliotecaSchema.find({ cnpj }) 
     
+    if(buscaBairro.length !== 0 ){
+        return res.status(400).json({
+            message :  `Desculpe,mas nesse bairro já existe uma biblioteca cadastrada. `
+        })
+    }
+    if(buscaCnpj.length !== 0){
+        return res.status(400).json({
+            message :  `Essa biblioteca(CNPJ) já está cadastrada. `
+        })
+    }
     
     try {
         const biblioteca = new bibliotecaSchema({
-            nome: req.body.nome,
-            cnpj: req.body.cnpj,
-            telefone: req.body.telefone,
-            iniciativa_privada: req.body.iniciativa_privada,
-            endereco:req.body.endereco,
-            bairros_atuantes: req.body.bairros_atuantes,
-            site: req.body.site,
-            atividades_disponiveis: req.body.atividades_disponiveis,
-            pessoa_responsavel: req.body.pessoa_responsavel
+            nome: nome,
+            cnpj: cnpj,
+            telefone: telefone,
+            iniciativa_privada: iniciativa_privada,
+            endereco:endereco,
+            bairros_atuantes: bairros_atuantes,
+            site: site,
+            atividades_disponiveis: atividades_disponiveis,
+            pessoa_responsavel: pessoa_responsavel
         })
 
         const salvarBiblioteca = await biblioteca.save()
@@ -34,7 +51,7 @@ const criarBiblioteca = async (req, res) => {
 
 // GET "/biblioteca" Deverá retornar todas as bibliotecas cadastradas.
 const buscarBiblioteca = async(req,res) =>{
-  //tentar como no exemplo....   
+   
     const {nome} = req.query
     let query = {}
     if (nome) query.nome = new RegExp(nome,'i')
@@ -53,7 +70,7 @@ const buscarBiblioteca = async(req,res) =>{
     }
 } 
 
-//GET "/xxxx/[id] Deverá retornar o valor com o id informado
+
 const buscarBibliotecaPorId = async(req,res) =>{
     try {
         const biblioteca = await bibliotecaSchema.findById(req.params.id)
@@ -66,7 +83,7 @@ const buscarBibliotecaPorId = async(req,res) =>{
     }
 }
 
-// DELETE "/biblioteca/[ID]" Deverá deletar uma biblioteca por id específico e retorna mensagem;
+
 const deletarBiblioteca = async(req, res) => {
    
     try {
@@ -86,7 +103,7 @@ const deletarBiblioteca = async(req, res) => {
         })
     }
 }
-//PATCH "/biblioteca/[ID]" Deverá alterar informação específica por id específico e retorna o cadastro atualizado;
+
 const atualizarBiblioteca = async (req,res) => {
     
     try {
@@ -107,9 +124,9 @@ const atualizarBiblioteca = async (req,res) => {
      
     const bibliotecaAtualizada = procurarBiblioteca.save()
     res.status(200).json({
-        message :  `Biblioteca Atualizada`,
+        message :  `Biblioteca Atualizada`
     
-        bibliotecaAtualizada})
+    })
 
 
     } catch (error) {

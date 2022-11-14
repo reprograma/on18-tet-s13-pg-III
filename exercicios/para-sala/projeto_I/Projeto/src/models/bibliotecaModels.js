@@ -3,21 +3,21 @@ const mongoose = require('mongoose')
 const bibliotecaSchema = new mongoose.Schema({
 
 
-  id: {
+ /* id: {
     type: mongoose.Types.ObjectId,
     default: mongoose.Types.ObjectId,
    
-  },
+  },*/
 
   nome: {
     type: String,
-    required : true
+    required : false
     
   },
 
   cnpj: {
     type: String,
-    required : true
+    required : false
     
     
   },
@@ -32,35 +32,54 @@ const bibliotecaSchema = new mongoose.Schema({
 
   
   endereco: {
-        cep: String,
-        rua: String,
-        numero: String,
-        complemento: String,
-        referencia: String,
-        estado: String,
-        cidade: String,
-        bairro: String,
-        
+    cep: {
+      type: String,
+      required: false
   },
-
-
-  bairros_atuantes: {
-    type:Array
+  rua: {
+      type: String,
+      required: false
   },
+  numero: {
+      type: Number,
+      required: false
+  },
+  complemento: {
+      type: String,
+      required: false
+  },
+  referencia: {
+      type: String,
+      required: false
+  },
+  estado: {
+      type: String,
+      required: false
+  },
+  cidade: {
+      type: String,
+      required: false
+  },
+  bairro: {
+      type: String,
+      required: false
+  }
+},
 
-  site: {
-    type: Array,
+
+  bairros_atuantes: [],
+
+  site: [{
+    type: String,
     required : false
-  },
+  }],
   
-  atividades_disponiveis: {
-    type: Array
-  },
+  atividades_disponiveis: [],
 
 
   pessoa_responsavel: {
     type: String,
-    required : true
+    required : false
    
     
   }
