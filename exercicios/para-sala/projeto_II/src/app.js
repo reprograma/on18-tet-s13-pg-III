@@ -6,12 +6,12 @@ const app = express()
 
 const database = require("./database/mongoConfig")
 
-// const cozinhaRoutes = require("./routes/cozinhaRoutes")
+const cozinhaRoutes = require("./routes/cozinhaRoutes")
 
 app.use(cors())
 app.use(express.json())
 
-// app.use("/cozinha", cozinhaRoutes)
+app.use("/cozinha", cozinhaRoutes)
 
 database.connect()
 
