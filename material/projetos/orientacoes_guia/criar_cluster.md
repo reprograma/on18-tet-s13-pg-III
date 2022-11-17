@@ -23,8 +23,4 @@
 
 <h1 align="center">
   <img src="../../../assets/criar_cluester_04.jpg" alt="logo reprograma" width="500">
-<<<<<<< HEAD
 </h1>
-=======
-</h1>
->>>>>>> 8befaa147438b9ffa89adfe52f900c1a0bc0d8eb
