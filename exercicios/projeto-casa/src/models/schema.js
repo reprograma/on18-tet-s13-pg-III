@@ -17,7 +17,7 @@ const cozinha = new mongoose.Schema({
         type: Boolean,
         required:false
     },
-    /*endereco:{
+    endereco:{
         cep:{
             type: Number,
             required: true
@@ -50,7 +50,7 @@ const cozinha = new mongoose.Schema({
             type: String,
             required: true
         }
-    },*/
+    },
     bairros_atuando:{
         type: Array,
         required: true

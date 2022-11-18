@@ -9,7 +9,7 @@ const cadastrarRestaurante = async(req,res)=>{
             nome: nome,
             cnpj: cnpj,
             iniciativaPrivada: iniciativaPrivada,
-            //endereco: endereco,
+            endereco: endereco,
             bairros_atuando: bairros_atuando,
             site: site,
             atividades: atividades,
@@ -37,7 +37,7 @@ const showRestaurantes = async(req,res)=>{
     if (id) query.id = new RegExp(id,"i");
 
     try{
-        const restaurantes = await restauranteSchema.find(query);
+        const restaurantes = await Schema.find(query);
         res.status(200).json(restaurantes)
 
     }catch(error){
