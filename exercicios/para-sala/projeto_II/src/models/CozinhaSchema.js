@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
 const cozinhaSchema = new mongoose.Schema({
-    /*id: {
+    id: {
         type: mongoose.Types.ObjectId,
         default: mongoose.Types.ObjectId
-    }, o mongoose duplica o id qnd eu deixo essa parte */
+    }, //o mongoose duplica o id qnd eu deixo essa parte 
     nome: {
         type: String,
         required: true

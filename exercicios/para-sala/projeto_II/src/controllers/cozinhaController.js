@@ -3,12 +3,16 @@ const { response } = require("../app");
 
 const CozinhaSchema = require("../models/CozinhaSchema");
 
-const buscarCozinha = async(req, res) => {
-    /*try {
-        const filtrarCozinhas = 
+const buscarTodasCozinhas = async(req, res) => {
+    try {
+        const buscarCozinhas = await CozinhaSchema.find()
+        res.status(200).json(buscarCozinhas)
+
     } catch (error) {
-        
-    } */
+        res.status(500).json({
+            mensagem: error.message
+        })
+    } 
 }
 
 
@@ -32,27 +36,27 @@ const cadastrarCozinha = async (req, res) => {
     try {
 
         const { nome, cnpj, telefone, iniciativa_privada, 
-            endereco, bairros_atuantes, site, atividades_disponiveis, pessoa_responsavel } = req.body
+        endereco, bairros_atuantes, site, atividades_disponiveis, pessoa_responsavel } = req.body
             
-            const buscarCnpj = await CozinhaSchema.find({ cnpj })
+        const buscarCnpj = await CozinhaSchema.find({ cnpj })
             //console.log("Esse aqui é buscar", buscarCnpj)
            
-            let checarCnpj = buscarCnpj.find((cozinha) => cozinha.cnpj == cnpj)
-            //console.log("Esse aqui é checar", checarCnpj) 
-
+        let checarCnpj = buscarCnpj.find((cozinha) => cozinha.cnpj == cnpj)
+            //console.log("Esse aqui é checar", checarCnpj)
+            
             if(checarCnpj){
                 return res.status(409).json({
                     mensagem: "Esse Cnpj já existe"
                 })
-            } 
+            }
             
-            let buscarBairro = await CozinhaSchema.find({ endereco })
+        let buscarBairro = await CozinhaSchema.find({ endereco })
 
-            let bairroExiste = buscarBairro.filter((cozinha) => cozinha.endereco.bairro == endereco.bairro) // true or false
+        let bairroExiste = buscarBairro.filter((cozinha) => cozinha.endereco.bairro === endereco.bairro) 
 
-            let existeNomeCozinha = bairroExiste.find((cozinha) => cozinha.nome == nome)
-
-            if(existeNomeCozinha){
+        let existeNomeCozinha = bairroExiste.find((cozinha) => cozinha.nome === nome)
+        
+        if(existeNomeCozinha){
                 return res.status(409).json({
                     mensagem: "Já existe uma cozinha com esse nome neste bairro"
                 })
@@ -96,7 +100,7 @@ const deletarCozinha = async(req, res) => {
             "mensagem": "Cozinha removida do sistema!"
         })
     } catch (error) {
-        res.status(400).json({
+        res.status(401).json({
             mensagem: error.message
         })
     }
@@ -104,13 +108,41 @@ const deletarCozinha = async(req, res) => {
 
 
 const atualizarCozinha = async(req, res) => {
+    try {
+        const { id } = req.params
+        
+        const { nome, cnpj, telefone, iniciativa_privada,
+        endereco, bairros_atuantes, site, atividades_disponiveis, pessoa_responsavel } = req.body
 
+        const procurarCozinha = await CozinhaSchema.findById(id)
 
+        procurarCozinha.nome = nome || procurarCozinha.nome
+        procurarCozinha.cnpj = cnpj || procurarCozinha.cnpj
+        procurarCozinha.telefone = telefone || procurarCozinha.telefone
+        procurarCozinha.iniciativa_privada = iniciativa_privada || procurarCozinha.iniciativa_privada
+        procurarCozinha.endereco = endereco || procurarCozinha.endereco
+        procurarCozinha.bairros_atuantes = bairros_atuantes || procurarCozinha.bairros_atuantes
+        procurarCozinha.site = site || procurarCozinha.site
+        procurarCozinha.atividades_disponiveis = atividades_disponiveis || procurarCozinha.atividades_disponiveis
+        procurarCozinha.pessoa_responsavel = pessoa_responsavel || procurarCozinha.pessoa_responsavel
+
+        const cozinhaAtualizada = procurarCozinha.save()
+        
+        res.status(200).json({
+            mensagem: "Cozinha atualiada!",
+            cozinhaAtualizada
+        })
+    } catch (error) {
+        res.status(400).json({
+            mensagem: error.message
+        })
+    }
+    
 }
 
 
 module.exports = {
-    buscarCozinha,
+    buscarTodasCozinhas,
     buscarCozinhaPorId,
     cadastrarCozinha,
     deletarCozinha,

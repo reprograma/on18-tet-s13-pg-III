@@ -3,7 +3,7 @@ const router = express.Router();
 
 const controller = require("../controllers/cozinhaController");
 
-router.get("/buscar", controller.buscarCozinha);
+router.get("/buscar", controller.buscarTodasCozinhas);
 router.get("/buscar/:id", controller.buscarCozinhaPorId);
 
 router.post("/cadastrar", controller.cadastrarCozinha);
