@@ -1,9 +1,7 @@
-require('dotenv').config()
+require('dotenv').config();
 
+const app = require("./src/app");
 
-const app = require("./src/app")
-const PORT = process.env.PORT
+const PORT = process.env.PORT;
 
-app.listen(PORT, () => console.log("Servidor Fluindo"))
-
-
+app.listen(PORT, () => console.log(`Projeto I ler é saber rodando na porta ${PORT}!`))

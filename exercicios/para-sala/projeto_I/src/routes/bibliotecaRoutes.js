@@ -1,12 +1,10 @@
-const controller = require('../controllers/bibliotecaController')
+const controller = require("../controllers/bibliotecaController")
+const router = require("express").Router()
 
-const express = require("express")
-
-const router = express.Router()
-
-router.get("/biblioteca" , controller.biblioteca)
-router.get("/biblioteca/:id", controller.buscarBiblioteca)
-router.post("/biblioteca", controller.criarBiblioteca)
+router.get("/", controller.buscarTodasBibliotecas)
+router.get("/:id", controller.buscarBibliotecaId)
+router.post("/", controller.criarBiblioteca)
+router.delete("/:id", controller.deletarBiblioteca)
+router.patch("/:id", controller.atualizarBiblioteca)
 
 module.exports = router
-
