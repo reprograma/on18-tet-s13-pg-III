@@ -1,17 +1,18 @@
 const mongoose = require("mongoose");
 
 const cozinhaSchema = new mongoose.Schema({
-    id: {
+    /*id: {
         type: mongoose.Types.ObjectId,
         default: mongoose.Types.ObjectId
-    },
+    }, o mongoose duplica o id qnd eu deixo essa parte */
     nome: {
         type: String,
         required: true
     },
     cnpj: {
         type: Number,
-        required: true
+        required: true,
+        unique: true
     },
     telefone: {
         type: String,
@@ -54,18 +55,18 @@ const cozinhaSchema = new mongoose.Schema({
             required: true
         }
     },
-    bairros_atuantes: { 
-        type: Array,
+    bairros_atuantes: [{ 
+        type: String,
         required: true
-    },
+    }],
     site: {
         type: String,
         required: false
     },
-    atividades_disponiveis: {
-        type: Array,
+    atividades_disponiveis: [{
+        type: String,
         required: false
-    },
+    }],
     pessoa_responsavel: {
         type: String,
         required: true

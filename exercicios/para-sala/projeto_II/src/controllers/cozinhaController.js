@@ -1,10 +1,16 @@
 const mongoose = require("mongoose");
+const { response } = require("../app");
 
 const CozinhaSchema = require("../models/CozinhaSchema");
 
 const buscarCozinha = async(req, res) => {
-
+    /*try {
+        const filtrarCozinhas = 
+    } catch (error) {
+        
+    } */
 }
+
 
 const buscarCozinhaPorId = async(req, res) => {
     try {
@@ -23,9 +29,35 @@ const buscarCozinhaPorId = async(req, res) => {
 
 
 const cadastrarCozinha = async (req, res) => {
-    const { nome, cnpj, telefone, iniciativa_privada, endereco, bairros_atuantes, site, atividades_disponiveis, pessoa_responsavel } = req.body
-
     try {
+
+        const { nome, cnpj, telefone, iniciativa_privada, 
+            endereco, bairros_atuantes, site, atividades_disponiveis, pessoa_responsavel } = req.body
+            
+            const buscarCnpj = await CozinhaSchema.find({ cnpj })
+            //console.log("Esse aqui é buscar", buscarCnpj)
+           
+            let checarCnpj = buscarCnpj.find((cozinha) => cozinha.cnpj == cnpj)
+            //console.log("Esse aqui é checar", checarCnpj) 
+
+            if(checarCnpj){
+                return res.status(409).json({
+                    mensagem: "Esse Cnpj já existe"
+                })
+            } 
+            
+            let buscarBairro = await CozinhaSchema.find({ endereco })
+
+            let bairroExiste = buscarBairro.filter((cozinha) => cozinha.endereco.bairro == endereco.bairro) // true or false
+
+            let existeNomeCozinha = bairroExiste.find((cozinha) => cozinha.nome == nome)
+
+            if(existeNomeCozinha){
+                return res.status(409).json({
+                    mensagem: "Já existe uma cozinha com esse nome neste bairro"
+                })
+            }
+
         const cozinha = new CozinhaSchema({
             nome: nome, 
             cnpj: cnpj, 
@@ -51,6 +83,7 @@ const cadastrarCozinha = async (req, res) => {
     }
 }
 
+
 const deletarCozinha = async(req, res) => {
     try {
         const { id } = req.params
@@ -69,9 +102,12 @@ const deletarCozinha = async(req, res) => {
     }
 }
 
+
 const atualizarCozinha = async(req, res) => {
 
+
 }
+
 
 module.exports = {
     buscarCozinha,
