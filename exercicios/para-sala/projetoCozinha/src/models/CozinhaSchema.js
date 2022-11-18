@@ -59,7 +59,7 @@ const cozinhaSchema = new mongoose.Schema({
    },
    referencia:{
     type:String,
-    required:false
+    required :true
    },
    estado:{
     type:String,
