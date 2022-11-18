@@ -66,7 +66,7 @@ const deletarBibliotecaPorId = async(req, res)=>{
         const bibliotecaEncontrada = await bibliotecaSchema.findById(req.params.id)
                   
           if (bibliotecaEncontrada == undefined){
-            return res.status(404).send({menssage: "Biblioteca não encontrada"})
+            return res.status(404).send({menssagem: "Biblioteca não encontrada"})
         }
        
         await bibliotecaEncontrada.delete()
