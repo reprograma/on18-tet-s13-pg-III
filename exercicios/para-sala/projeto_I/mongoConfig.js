@@ -7,12 +7,8 @@ const connect = async() => {
             useUnifiedTopology: true
         })
 
-        console.log(`conectado ao banco de dados, lets go!`)
+        console.log(`conectado ao banco de dados`)
     }catch(error){
         console.log(error.message)
     }
 }
-
-module.exports = {
-    connect
-};
