@@ -7,13 +7,12 @@ const app = express()
 
 const database = require ("./database/mongoConnect")
 const rotasdaCozinha = require ("./routes/cozinhaRoutes")
-const RotasdoUser = require('./routes/userRoutes')
+
 
 app.use(cors())
 app.use(express.json())
 app.use("/cozinha", rotasdaCozinha)
-// Rota para login
-app.use("/users", RotasdoUser);
+
 
 database.connect()
 

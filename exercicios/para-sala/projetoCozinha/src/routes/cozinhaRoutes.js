@@ -1,18 +1,24 @@
 const express = require ("express")
 const router = express.Router()
 
-const controller = require ("../controller/cozinhaController")
-const controlar = require ("../controller/authController")
+const controllerCozinha = require ("../controller/cozinhaController")
+const controllerAuth = require ("../controller/authController")
+const controllerUser = require ("../controller/userController")
+const{checaAutenticacao} = require ("../middlewares/auth")
 
-router.get("/criar",controller.criarCozinhaProjeto)
-router.get("/buscar",controller.buscarCozinha)
-router.get("/:id",controller.idCozinha)
-router.post("/cozinha",controller.criacaoCozinha)
-router.delete("/:id",controller.deletarCozinha)
-router.post("/:id",controller.cadastroAtualizado)
-router.get("/all", controlar.criarLogin);
-router.post("/create", controlar.criarLogin);
-router.post("/login", controlar.criarLogin)
 
+//rotas somente de cozinha
+router.get("/criar",controllerCozinha.criarCozinhaProjeto)
+// router.post("/buscar",checaAutenticacao, controllerCozinha.buscarCozinha)
+router.get("/:id",controllerCozinha.idCozinha)
+// router.post("/cozinha",checaAutenticacao, controllerCozinha.criacaoCozinha)
+// router.delete("cozinha/:id",checaAutenticacao, controllerCozinha.deletarCozinha)
+router.post("/:id",controllerCozinha.cadastroAtualizado)
+
+//rotas use
+router.post("/criar", controllerUser.criarUsuario);
+
+//rota de login
+router.post("/login", controllerAuth.criarLogin);
 
 module.exports=router
