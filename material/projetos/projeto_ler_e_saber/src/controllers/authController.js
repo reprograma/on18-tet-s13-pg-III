@@ -29,7 +29,7 @@ const login = (req, res) => {
       }
 
       const token = jwt.sign({ name: user.name }, SECRET);
-      console.log("O token", token);
+      console.log("token", token);
 
       res.status(200).send({
         message: "Login efetuado com sucesso!",
