@@ -7,11 +7,12 @@ const cors = require('cors');
 const app = express();
 
 const database = require('./database/moogoseConnect');
-const rotasCozinha = require('./routes/cozinhaRoutes');
+// const db = require('./config/database');
+const todasAsRotas = require('./routes/cozinhaRoutes');
 
 app.use(cors());
 app.use(express.json())
-app.use("/cozinha", rotasCozinha)
+app.use("/cozinha", todasAsRotas)
 
 database.connect();
 
