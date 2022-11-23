@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const bibliotecaSchema = new mongoose.Schema({
-    _id: {
+    id: {
         type: mongoose.Types.ObjectId,
         default:mongoose.Types.ObjectId
     },
@@ -70,7 +70,7 @@ const bibliotecaSchema = new mongoose.Schema({
     }
 
 
-})
+}, {timestamp: true})
 
 module.exports = mongoose.model("biblioteca", bibliotecaSchema);
 

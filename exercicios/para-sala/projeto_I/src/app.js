@@ -4,6 +4,8 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 
+require('dotenv').config()
+
 const database = require("./database/mongoConfig");
 const bibliotecaRoutes = require("./routes/bibliotecaRoutes")
 

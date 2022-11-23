@@ -18,6 +18,19 @@ const criarBiblioteca = async (req, res) => {
             responsavel
         } = req.body
     
+        const verificaCnpj = await BibliotecaSchema.find({cnpj})
+        // console.log(cnpj)
+        if (verificaCnpj.length !== 0){
+            return res.status(409).json({mensagem:"Esse CNPJ já existe em nossos registros."})
+        }
+
+        // const buscarBairro = await BibliotecaSchema.find({bairro})
+        // const buscarNome = await BibliotecaSchema.find({ nome })
+        // if(buscarBairro && buscarNome){
+        //     return res.status(400).json({mensgagem:"O nome desta biblioteca já existe nesse bairro"})
+        // }
+        
+        
         const biblioteca = new BibliotecaSchema({
             nome:nome,
             cnpj: cnpj,
@@ -29,28 +42,9 @@ const criarBiblioteca = async (req, res) => {
             atividades_disponiveis: atividades_disponiveis,
             responsavel: responsavel        
         })
-        
-        const verificaCnpj = await BibliotecaSchema.find({cnpj})
-        
-        if (verificaCnpj.length !== 0){
-            return res.status(409).json({mensagem:"Esse CNPJ já existe em nossos registros."})
-        }else{
-            console.log("biblioteca cadastrada")
-        } 
-          
-        // const verificaEnderecoExistente = BibliotecaSchema.endereco.find(endereco => endereco.bairro === endereco.bairro)
-        //     if(verificaExisteEndereco){
-        //     const verificaNome = BibliotecaSchema.find(biblioteca => biblioteca.nome === nome)
-        //         if(verificaNome && verificaExisteEndereco){
-        //             return res.status(409).json({mensagem:"Já existe uma biblioteca com esse nome nesse bairro."}) 
-        //         } 
-        //     }
-
+  
+            
         const salvarBiblioteca = await biblioteca.save();
-
-        
-        
-        
 
         res.status(201).json({
             biblioteca: salvarBiblioteca,
@@ -107,10 +101,31 @@ const deleteById = async (req,res) => {
 }
 
 const atualizaTelefone = async (req, res) => {
-    const {telefone} = req.body
-    const {id} = req.params
+    const {nome,
+        cnpj,
+        telefone,
+        iniciativa_privada,
+        endereco,
+        bairros_atuantes, 
+        site, 
+        atividades_disponiveis, 
+        responsavel} = req.body
+    
+        const {id} = req.params
+    
     try {              
-        const biblioteca = await BibliotecaSchema.findOneAndUpdate({id},{telefone})
+        const biblioteca = await BibliotecaSchema.findOneAndUpdate({id},{
+            nome, 
+            cnpj, 
+            telefone, 
+            iniciativa_privada, 
+            endereco, 
+            bairros_atuantes,
+            site, 
+            atividades_disponiveis, 
+            responsavel
+        })
+        
         
         await biblioteca.save()
 
