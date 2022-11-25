@@ -8,8 +8,8 @@ const reservaRoutes = require('./routes/reservaRoutes')
 
 app.use(express.json())
 app.use(cors())
-app.use("/", cozinhaRoutes)
-app.use("/", reservaRoutes)
+app.use("/cozinha", cozinhaRoutes)
+app.use("/reserva", reservaRoutes)
 
 db.connect();
 

@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const reservaSchema = new mongoose.Schema({
 
     cozinha: {
-        type: mongoose.SchemaType.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'cozinha',
         required: true
     },

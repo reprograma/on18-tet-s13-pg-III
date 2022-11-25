@@ -2,21 +2,18 @@ const mongoose = require('mongoose');
 
 const cozinhaSchema = new mongoose.Schema({
 
-    
     nome: {
         type: String,
         required: true
     },
    cnpj: {
-        type: Number,
-        required: true
+        type: String,
+        required: true,
+        unique: true
    },
    telefone:{
        type: Number,
        required: true
-   },
-   iniciativa_privada:{
-        type: Boolean,
    },
    site:{
         type: String,
@@ -65,6 +62,6 @@ const cozinhaSchema = new mongoose.Schema({
         type: Array,
         required: true
    }
-})
+}, {timestamp: true})
 
 module.exports = mongoose.model('cozinha',cozinhaSchema);
